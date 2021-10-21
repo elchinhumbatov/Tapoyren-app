@@ -3,7 +3,9 @@ import { Platform, SafeAreaView, StatusBar, StyleSheet } from 'react-native'
 
 const MySafeAreaView = ({children, bgColor = '#fff'}) => {
   return (
-    <SafeAreaView style={[styles.container, {backgroundColor: bgColor}]}>
+    <SafeAreaView style={[styles.container, 
+      // {backgroundColor: bgColor}
+    ]}>
       {children}
     </SafeAreaView>
   )

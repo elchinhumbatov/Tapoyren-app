@@ -1,31 +1,26 @@
-import React from 'react'
-import { FlatList, StyleSheet } from 'react-native'
+import React from "react";
+import { StyleSheet } from "react-native";
 
-import { COURSES as courses } from '../../data/dummy-data'
-import CoursesComponent from '../../components/CategoryComponents/CoursesComponent';
+import { COURSES as courses } from "../../data/dummy-data";
+import CoursesComponent from "../../components/CategoryComponents/CoursesComponent";
+import CategoryScreens from "../../components/CategoryComponents/CategoryScreens";
 
-const SubcategoryCourses = ({navigation}) => {
-  const renderItem = ({item}) => <CoursesComponent item={item} onPress={handleCourse} />
-
-  const handleCourse = (id) => {
-    navigation.navigate('CourseScreen', {id})
-  }
+const SubcategoryCourses = ({ navigation, route }) => {
+  const handleCourse = (id, title) => {
+    navigation.navigate("CourseScreen", { id, title });
+  };
 
   return (
-    <FlatList 
+    <CategoryScreens
       data={courses}
-      renderItem={renderItem}
-      contentContainerStyle={styles.flatlist}
       numColumns={2}
-      columnWrapperStyle={{justifyContent: 'space-between'}}
+      columnStyle={{ justifyContent: "space-between" }}
+      CBfunc={handleCourse}
+      SomeComponent={CoursesComponent}
     />
-  )
-}
+  );
+};
 
-export default SubcategoryCourses
+export default SubcategoryCourses;
 
-const styles = StyleSheet.create({
-  flatlist: {
-    padding: 25,
-  },
-})
+const styles = StyleSheet.create({});

@@ -5,9 +5,9 @@ import commonStyles from '../../config/commonStyles'
 
 const SubcategoryComponent = ({item, onPress}) => {
   return (
-    <TouchableOpacity onPress={() => onPress(item.id)}>
+    <TouchableOpacity onPress={() => onPress(item)}>
       <View style={[styles.subcategory, commonStyles.shadow]}>
-        <Text numberOfLines='1' style={styles.subcatTitle}>{item.title}</Text>
+        <Text numberOfLines={1} style={styles.subcatTitle}>{item.title}</Text>
         <Text>13 courses</Text>
       </View>
     </TouchableOpacity>

@@ -4,7 +4,7 @@ import MySafeAreaView from "../../components/MySafeAreaView/MySafeAreaView";
 
 const HomeScreen = ({ navigation }) => {
   return (
-    <MySafeAreaView bgColor={'yellow'}>
+    <MySafeAreaView>
       <ScrollView style={s.container}>
         <Text>This is Home Screen!</Text>
         <View style={s.box}></View>
@@ -31,7 +31,7 @@ const s = StyleSheet.create({
     flex: 1,
     // justifyContent: 'center',
     // alignItems: 'center',
-    backgroundColor: "yellow",
+    // backgroundColor: "yellow",
   },
   box: {
     width: 150,

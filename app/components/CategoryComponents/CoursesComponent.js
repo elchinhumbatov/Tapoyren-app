@@ -7,7 +7,7 @@ import colors from '../../config/colors';
 
 const CoursesComponent = ({item, onPress}) => {
   return (
-    <TouchableOpacity onPress={() => onPress(item.id)}>
+    <TouchableOpacity onPress={() => onPress(item.id, item.title)}>
       <View style={[styles.course, commonStyles.shadow]}>
         <Image style={styles.courseImg} source={{uri: item.imageUrl}} />
         <View style={styles.infoWrap}>
@@ -30,12 +30,13 @@ const styles = StyleSheet.create({
     width: 150,
     margin: 10,
     borderRadius: 10,
-    overflow: 'hidden',
     backgroundColor: '#fff',
   },
   courseImg: {
     width: '100%',
     height: 140,
+    borderTopLeftRadius: 10,
+    borderTopRightRadius: 10,
   },
   infoWrap: {
     flex: 1,

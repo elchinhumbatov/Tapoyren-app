@@ -5,7 +5,7 @@ import MySafeAreaView from "../../components/MySafeAreaView/MySafeAreaView";
 
 const SearchScreen = ({ route, navigation }) => {
   return (
-    <MySafeAreaView bgColor={'lightgreen'}>
+    <MySafeAreaView>
       <View style={styles.container}>
         <Text>This is search screen</Text>
       </View>
@@ -20,6 +20,5 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "lightgreen",
   },
 });
