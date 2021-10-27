@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, Text, View } from 'react-native'
+import { Platform, StyleSheet, Text, View } from 'react-native'
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "@expo/vector-icons";
 
@@ -15,7 +15,7 @@ const AppTabNavigator = () => {
   return (
     <Tab.Navigator
         screenOptions={({ route }) => ({
-          tabBarStyle: {paddingBottom: 5},
+          tabBarStyle: Platform.OS === 'ios' ? null : {paddingBottom: 5},
           headerShown: false,
           tabBarIcon: ({ focused, color, size }) => {
             let iconName;

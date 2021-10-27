@@ -1,7 +1,8 @@
 import React from "react";
 import { ScrollView, StyleSheet, Text, View } from 'react-native'
 
-const CourseWatch = () => {
+const CourseWatch = ({route}) => {
+  console.log(route)
   return (
     <View style={styles.w}>
       <View style={styles.a}></View>

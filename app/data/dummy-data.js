@@ -146,9 +146,23 @@ export const SECTIONS = [
   ),
 ];
 
-export const COURSE = {
-  img: "https://tapoyren.com/uploads/images/lkJcXsCCfuREaG6oCWxbZSCn9XQuYCsXMGFAW0ft.jpeg",
-  instructor: "Jamal Alishov",
-  about: 'ACCA FM Financial Management (F9) BPP Revision Kit suallarının izahlı həllərini burada göstəririk. (Qeyd olaraq istəyənlər üçün bütün kursların olduğu ACCA tam paketi linki: ACCA Paketi - tıklayın)',
-  
-};
+export const COURSE = [
+  {
+    id: 'm1',
+    img: "https://tapoyren.com/uploads/images/lkJcXsCCfuREaG6oCWxbZSCn9XQuYCsXMGFAW0ft.jpeg",
+    instructor: "Jamal Alishov",
+    about: 'ACCA FM Financial Management (F9) BPP Revision Kit suallarının izahlı həllərini burada göstəririk. (Qeyd olaraq istəyənlər üçün bütün kursların olduğu ACCA tam paketi linki: ACCA Paketi - tıklayın)',
+  },
+  {
+    id: 'm2',
+    img: "https://tapoyren.com/uploads/images/lkJcXsCCfuREaG6oCWxbZSCn9XQuYCsXMGFAW0ft.jpeg",
+    instructor: "John Doe",
+    about: 'ACCA FM Financial Management (F9) BPP Revision Kit suallarının izahlı həllərini burada göstəririk. (Qeyd olaraq istəyənlər üçün bütün kursların olduğu ACCA tam paketi linki: ACCA Paketi - tıklayın)',
+  },
+  {
+    id: 'm3',
+    img: "https://tapoyren.com/uploads/images/lkJcXsCCfuREaG6oCWxbZSCn9XQuYCsXMGFAW0ft.jpeg",
+    instructor: "Someone Else",
+    about: 'ACCA FM Financial Management (F9) BPP Revision Kit suallarının izahlı həllərini burada göstəririk. (Qeyd olaraq istəyənlər üçün bütün kursların olduğu ACCA tam paketi linki: ACCA Paketi - tıklayın)',
+  },
+];

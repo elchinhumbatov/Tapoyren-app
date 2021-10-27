@@ -1,6 +1,7 @@
 import React from "react";
 import { SafeAreaView, StyleSheet, Text, View, ScrollView } from "react-native";
 import MySafeAreaView from "../../components/MySafeAreaView/MySafeAreaView";
+import LottieView from 'lottie-react-native';
 
 const HomeScreen = ({ navigation }) => {
   return (

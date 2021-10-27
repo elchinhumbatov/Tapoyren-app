@@ -2,12 +2,13 @@ import React from 'react'
 import { StyleSheet, TouchableOpacity, Text, View } from 'react-native'
 
 import commonStyles from '../../config/commonStyles'
+import colors from '../../config/colors'
 
 const CategoryComponent = ({item, onPress}) => {
   return (
-    <TouchableOpacity onPress={() => onPress(item)}>
-      <View style={[styles.category, commonStyles.shadow, { backgroundColor: item.color }]}>
-        <Text>{item.title}</Text>
+    <TouchableOpacity onPress={() => onPress(item.parentCategoryId, item.parentCategoryTitle)}>
+      <View style={[styles.category, commonStyles.shadow]}>
+        <Text style={styles.title}>{item.parentCategoryTitle}</Text>
       </View>
     </TouchableOpacity>
   )
@@ -24,5 +25,11 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
     alignItems: "flex-end",
     marginVertical: 10,
+    backgroundColor: colors.primary,
   },
+  title: {
+    fontWeight: '600',
+    fontSize: 15,
+    color: colors.white, 
+  }
 })

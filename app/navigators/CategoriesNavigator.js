@@ -42,7 +42,10 @@ const CategoriesNavigator = ({ navigation }) => {
       <Stack.Screen
         name="CourseWatch"
         component={CourseWatch}
-        options={{ presentation: "modal" }}
+        options={({ route }) => ({ 
+          title: route.params.title,
+          presentation: "modal"
+        })}
       />
     </Stack.Navigator>
   );
