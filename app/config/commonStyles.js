@@ -1,9 +1,12 @@
 import { StyleSheet } from "react-native";
 
+import colors from './colors';
+
 export default StyleSheet.create({
   screenTitle: {
     fontSize: 36,
     paddingLeft: 10,
+    color: colors.primary,
   },
   shadow: {
     shadowColor: "#000",

@@ -1,182 +1,215 @@
 import React, { useEffect, useState } from "react";
 import {
-  FlatList,
   Image,
-  Modal,
   ScrollView,
   StyleSheet,
   Text,
-  TouchableHighlight,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
   View,
 } from "react-native";
-import { AirbnbRating } from "react-native-ratings";
-import LottieView from 'lottie-react-native';
+import { Rating } from "react-native-ratings";
+import { VimeoPlayer } from "@mindtechapps/rn-vimeo-player";
+import { Tab, TabView } from "react-native-elements";
 
-import commonStyles from "../../config/commonStyles";
-import { COURSE as course } from "../../data/dummy-data";
-import { COURSES as courses } from "../../data/dummy-data";
 import colors from "../../config/colors";
-import CourseComponent from "../../components/CategoryComponents/CourseComponent";
-
+import { getCourse } from "../../api/courseScreenAPI";
+import Loader from "../../components/Loader/Loader";
+import MySafeAreaView from "../../components/MySafeAreaView/MySafeAreaView";
+import CourseSections from "../../components/CategoryComponents/CourseSections";
 
 const CourseScreen = ({ route, navigation }) => {
-  const [modalVisible, setModalVisible] = useState(false);
-  const [courseObj, setCourseObj] = useState({});
-  const title = route.params.title || "Course";
-  const id = route.params.id || "m1";
+  const [videoId, setVideoId] = useState(null);
+  const [tabIndex, setTabIndex] = useState(0);
+  const [isLoading, setisLoading] = useState(false);
+  const [course, setCourse] = useState({});
+
+  const fetchCourse = async () => {
+    try {
+      setisLoading(true);
+      let res = await getCourse(route.params.id);
+      let data = await res.data;
+      setCourse(data[0]);
+    } catch (error) {
+      console.log("Error from course screen ", error);
+    } finally {
+      setisLoading(false);
+    }
+  };
 
   useEffect(() => {
-    setCourseObj(course.find((i) => i.id === id));
-  }, [course, id]);
+    fetchCourse();
+  }, [route.params.id]);
 
-  const handlePress = (id, title) => {
-    navigation.navigate("CourseScreen", { title, id });
-  };
-  const handleRate = (val) => {
-    setModalVisible(true)
-    console.log(val);
-  };
+  if (isLoading) return <Loader />;
+
   return (
-    <ScrollView style={styles.container}>
-      <View
-        style={[styles.wrapper, { flexDirection: "row" }, commonStyles.shadow]}
-      >
-        <Image style={styles.img} source={{ uri: courseObj.img }} />
-        <View style={styles.info}>
-          <View style={{ alignItems: "center" }}>
-            <Text style={styles.instructor}>{courseObj.instructor}</Text>
-            <Text style={styles.secondary}>Telimchi</Text>
-          </View>
-          <TouchableHighlight
-            onPress={() => navigation.navigate("CourseWatch", { title })}
-            style={styles.btn}
-          >
-            <Text style={{ color: colors.white }}>Bashla</Text>
-          </TouchableHighlight>
-        </View>
-      </View>
-      <View style={[styles.wrapper, commonStyles.shadow]}>
-        <View style={styles.about}>
-          <Text style={styles.aboutTitle}>Kurs haqqında</Text>
-          <Text style={styles.text}>
-            ACCA FM Financial Management (F9) BPP Revision Kit suallarının
-            izahlı həllərini burada göstəririk. (Qeyd olaraq istəyənlər üçün
-            bütün kursların olduğu ACCA tam paketi linki: ACCA Paketi -
-            tıklayın)
-          </Text>
-          <Text style={styles.text}>
-            Bir çoxlarınız sualların həllərini anlamaqda çətinlik çəkirsiniz, bu
-            kurs sizə kömək edəcəkdir. Çünkü imtahanlarda da burada verilmiş
-            testlərə oxşar testlər olacaqdır və əgər siz həlləri anlayarsınızsa
-            imtahanları da rahat keçərsiniz.
-          </Text>
-        </View>
-      </View>
-      <Text style={[styles.aboutTitle, { paddingLeft: 10 }]}>
-        Diger Kurslar
-      </Text>
-      <FlatList
-        data={courses}
-        renderItem={({ item }) => (
-          <CourseComponent item={item} onPress={handlePress} />
-        )}
-        horizontal
-      />
-      <View style={[styles.wrapper, { marginBottom: 15 }, commonStyles.shadow]}>
-        <Text style={styles.aboutTitle}>Tələbələrin fikirləri</Text>
-        <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
-          <AirbnbRating
-            showRating={false}
-            defaultRating={0}
-            selectedColor={colors.primary}
-            size={30}
-            onFinishRating={handleRate}
-            ratingContainerStyle={{width: '50%'}}
-          />
-          <Text>4.5</Text>
-          <Modal 
-            visible={modalVisible}
-            animationType='fade'
-            transparent={true}
-          >
-            <View style={styles.modalContainer}>
-              <View style={[styles.modalView, commonStyles.shadow]}>
-                <LottieView
-                  source={require("../../assets/animations/rating-star.json")}
-                  style={{
-                    width: 130,
-                    height:130
-                  }}
-                  autoPlay
-                  loop={false}
-                  onAnimationFinish={() => setModalVisible(false)}
-                />
-                <Text>Thanks!</Text>
-              </View>
+    <MySafeAreaView>
+      <ScrollView>
+        <View style={styles.playerWrap}>
+          {videoId && (
+            <View style={{ height: 220 }}>
+              <VimeoPlayer videoId={videoId} loaderColor={colors.primary} />
             </View>
-          </Modal>
+          )}
         </View>
-      </View>
-    </ScrollView>
+        <View style={styles.content}>
+          <View style={styles.priceRating}>
+            <Text style={styles.price}>
+              &#10969;{course.priceMonthly}{" "}
+              <Text style={{ fontSize: 14 }}>aylıq</Text>
+            </Text>
+            <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
+              <Rating
+                type='custom'
+                readonly
+                startingValue={course.rating}
+                ratingColor={colors.primary}
+                imageSize={25}
+                fractions={1}
+              />
+              <Text style={{marginLeft: 5, fontSize: 18, color: colors.primary, fontWeight: '500'}}>{course.rating}</Text>
+            </View>
+          </View>
+          <View style={styles.instructorBlock}>
+            <View style={styles.instructorWrap}>
+              <Image
+                resizeMode='contain'
+                style={[styles.instructorImg, {backgroundColor: 'silver' }]}
+                source={ course.instructorAvatar ? { uri: course.instructorAvatar } : require('../../assets/img/logo.png')}
+              />
+              <Text style={styles.instructor}>{course.instructorName}</Text>
+            </View>
+            <TouchableWithoutFeedback>
+              <Text style={styles.profileBtn}>Profile</Text>
+            </TouchableWithoutFeedback>
+          </View>
+          <View style={styles.tabsWrap}>
+            <Tab
+              value={tabIndex}
+              onChange={setTabIndex}
+              indicatorStyle={{ backgroundColor: "blue" }}
+            >
+              <Tab.Item
+                title="Videos"
+                titleStyle={styles.tabTitle}
+                containerStyle={styles.tabContainer}
+              />
+              <Tab.Item
+                title="About"
+                titleStyle={styles.tabTitle}
+                containerStyle={styles.tabContainer}
+              />
+              <Tab.Item
+                title="More"
+                titleStyle={styles.tabTitle}
+                containerStyle={styles.tabContainer}
+              />
+            </Tab>
+            <TabView value={tabIndex} onChange={setTabIndex}>
+              <TabView.Item style={{ width: "100%" }}>
+                <CourseSections setVideoId={setVideoId} courseId={route.params.id} />
+              </TabView.Item>
+              <TabView.Item style={{ width: "100%", padding: 10 }}>
+                <Text h1>{course.about}</Text>
+              </TabView.Item>
+              <TabView.Item style={{ backgroundColor: "lightgreen", width: "100%" }}>
+                <Text h1>Cart</Text>
+              </TabView.Item>
+            </TabView>
+          </View>
+        </View>
+      </ScrollView>
+      <TouchableOpacity style={styles.enrollBtnWrap}>
+        <Text style={styles.enrollBtn}>Enroll</Text>
+      </TouchableOpacity>
+    </MySafeAreaView>
   );
 };
 
 export default CourseScreen;
 
 const styles = StyleSheet.create({
-  container: {
-    padding: 10,
-    // paddingHorizontal: 5,
+  playerWrap: {
+    // flex: 1,
   },
-  wrapper: {
-    justifyContent: "space-around",
-    backgroundColor: "#fff",
-    borderRadius: 5,
-    padding: 10,
-    marginVertical: 10,
+  content: {
+    // flex: 2,
   },
-  img: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
-  },
-  info: {
+  prevView: {
     flex: 1,
+    justifyContent: "center",
+    alignItems: "flex-end",
+    paddingHorizontal: 10,
+  },
+  prevText: {
+    color: "silver",
+    fontWeight: "600",
+    fontSize: 20,
+  },
+  playingVideo: {
+    fontSize: 20,
+    fontWeight: "600",
+    padding: 10
+  },
+  priceRating: {
+    flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
+    paddingHorizontal: 15,
+  },
+  price: {
+    color: colors.primary,
+    fontSize: 20,
+  },
+  instructorBlock: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginTop: 10,
+    borderTopWidth: 1,
+    borderTopColor: "gray",
+    padding: 15,
+  },
+  instructorWrap: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  instructorImg: {
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    marginRight: 7,
   },
   instructor: {
-    fontWeight: "700",
-    fontSize: 24,
-  },
-  btn: {
-    backgroundColor: colors.primary,
-    paddingHorizontal: 25,
-    paddingVertical: 10,
-    borderRadius: 10,
-  },
-  aboutTitle: {
-    fontSize: 18,
     fontWeight: "600",
-    marginBottom: 7,
+    fontSize: 20,
   },
-  text: {
-    marginVertical: 5,
-    lineHeight: 18,
-  },
-  modalContainer: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: 'rgba(0,0,0, .7)'
-  },
-  modalView: {
-    width: 150,
-    height: 150,
+  profileBtn: {
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderWidth: 1,
     borderRadius: 10,
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: '#fff',
-    paddingBottom: 10
-  }
+    borderColor: colors.primary,
+    color: colors.primary,
+  },
+  tabTitle: {
+    color: "#000",
+    textTransform: "capitalize",
+    paddingVertical: 1,
+  },
+  tabContainer: {
+    backgroundColor: "#eee",
+  },
+  enrollBtnWrap: {
+    backgroundColor: colors.primary, 
+    justifyContent:'center'
+  },
+  enrollBtn: {
+    color: colors.white,
+    textAlign: 'center',
+    paddingVertical: 12,
+    fontWeight: '600',
+    fontSize: 18,
+  },
 });

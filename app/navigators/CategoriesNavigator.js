@@ -6,7 +6,6 @@ import CategoriesHome from "../screens/CategoriesScreen/CategoriesHome";
 import SubcategoriesScreen from "../screens/CategoriesScreen/SubcategoriesScreen";
 import SubcategoryCourses from "../screens/CategoriesScreen/SubcategoryCourses";
 import CourseScreen from "../screens/CategoriesScreen/CourseScreen";
-import CourseWatch from "../screens/CategoriesScreen/CourseWatch";
 
 const Stack = createNativeStackNavigator();
 
@@ -37,14 +36,6 @@ const CategoriesNavigator = ({ navigation }) => {
         options={({ route }) => ({ 
           title: route.params.title,
           animation: "fade"
-        })}
-      />
-      <Stack.Screen
-        name="CourseWatch"
-        component={CourseWatch}
-        options={({ route }) => ({ 
-          title: route.params.title,
-          presentation: "modal"
         })}
       />
     </Stack.Navigator>

@@ -1,12 +1,14 @@
 import React from 'react'
-import { Platform, StyleSheet, Text, View } from 'react-native'
+import { Platform, StyleSheet } from 'react-native'
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "@expo/vector-icons";
 
 import colors from '../config/colors';
 import HomeScreen from '../screens/HomeScreen/HomeScreen';
-import SearchScreen from '../screens/SearchScreen/SearchScreen';
 import CategoriesNavigator from './CategoriesNavigator';
+import SearchNavigator from './SearchNavigator';
+import FavoritesNavigator from './FavoritesNavigator';
+import AuthScreen from '../screens/AuthScreen/AuthScreen';
 
 
 const Tab = createBottomTabNavigator();
@@ -15,6 +17,7 @@ const AppTabNavigator = () => {
   return (
     <Tab.Navigator
         screenOptions={({ route }) => ({
+          tabBarHideOnKeyboard: true,
           tabBarStyle: Platform.OS === 'ios' ? null : {paddingBottom: 5},
           headerShown: false,
           tabBarIcon: ({ focused, color, size }) => {
@@ -46,10 +49,10 @@ const AppTabNavigator = () => {
         })}
       >
         <Tab.Screen name="Home" component={HomeScreen} />
-        <Tab.Screen name="Search" component={SearchScreen} />
+        <Tab.Screen name="Search" component={SearchNavigator} />
         <Tab.Screen name="CategoriesNavigator" component={CategoriesNavigator} options={{title: 'Categories'}} />
-        <Tab.Screen name="Favorite" component={SearchScreen} />
-        <Tab.Screen name="Account" component={SearchScreen} />
+        <Tab.Screen name="Favorite" component={FavoritesNavigator} />
+        <Tab.Screen name="Account" component={AuthScreen} />
       </Tab.Navigator>
   )
 }

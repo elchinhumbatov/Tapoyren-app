@@ -1,8 +1,7 @@
 import axios from 'axios';
 
 const axiosClient = axios.create({
-  // baseURL: `https://9205-213-154-20-84.ngrok.io`,
-  baseURL: `https://35c0-213-154-20-84.ngrok.io`,
+  baseURL: `http://tapoyren.morooq.az/`,
   headers: {
     'Accept': 'application/json',
     'Content-Type': 'application/json'

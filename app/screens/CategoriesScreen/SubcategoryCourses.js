@@ -18,7 +18,8 @@ const SubcategoryCourses = ({ navigation, route }) => {
       let data = await res.data;
       setCourses(data);
     } catch (error) {
-      console.log('error is ', error.message);
+      console.log('coursesScreen', error.message);
+      setCategories([{myErr: 'Oops, something went wrong, pls try again later'}]);
     } finally {
       setIsLoading(false)
     }

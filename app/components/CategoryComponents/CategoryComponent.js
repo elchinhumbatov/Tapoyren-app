@@ -8,7 +8,7 @@ const CategoryComponent = ({item, onPress}) => {
   return (
     <TouchableOpacity onPress={() => onPress(item.parentCategoryId, item.parentCategoryTitle)}>
       <View style={[styles.category, commonStyles.shadow]}>
-        <Text style={styles.title}>{item.parentCategoryTitle}</Text>
+        <Text numberOfLines={3} style={styles.title}>{item.parentCategoryTitle}</Text>
       </View>
     </TouchableOpacity>
   )

@@ -20,6 +20,7 @@ const CategoriesHome = ({ navigation }) => {
       setCategories(data);
     } catch (error) {
       console.log('error is ', error.message);
+      setCategories([{myErr: 'Oops, something went wrong, pls try again later'}]);
     } finally {
       setIsLoading(false)
     }

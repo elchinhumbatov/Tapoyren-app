@@ -5,7 +5,6 @@ import CategoryScreens from "../../components/CategoryComponents/CategoryScreens
 import SubcategoryComponent from "../../components/CategoryComponents/SubcategoryComponent";
 import Loader from "../../components/Loader/Loader";
 
-import { SUBCATEGORIES as subcats } from "../../data/dummy-data";
 
 const SubcategoriesScreen = ({ route, navigation }) => {
   const [subCategories, setSubCategories] = useState([]);
@@ -18,7 +17,8 @@ const SubcategoriesScreen = ({ route, navigation }) => {
       let data = await res.data;
       setSubCategories(data);
     } catch (error) {
-      console.log(error);
+      console.log('subcatScreen', error.message);
+      setCategories([{myErr: 'Oops, something went wrong, pls try again later'}]);
     } finally {
       setIsLoading(false)
     }

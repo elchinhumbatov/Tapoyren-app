@@ -10,9 +10,13 @@ const CategoryScreens = ({
   myKey,
   handleRefresh
 }) => {
-  const renderItem = ({ item }) => (
-    <SomeComponent item={item} onPress={CBfunc} />
-  );
+  const renderItem = ({ item }) => {
+    if (item.myErr) {
+      return <Text>{item.myErr}</Text>
+    }
+    return <SomeComponent item={item} onPress={CBfunc} />
+  }
+
   const onRefresh = () => (
     handleRefresh()
   );
@@ -25,8 +29,11 @@ const CategoryScreens = ({
       contentContainerStyle={styles.flatlist}
       numColumns={numColumns}
       columnWrapperStyle={columnStyle}
-      ListEmptyComponent={<Text>Please try again later</Text>}
-      keyExtractor={(item) => item[myKey]}
+      // ListEmptyComponent={<Text>Please try again later</Text>}
+      keyExtractor={(item) => {
+        if (typeof(item[myKey]) === "number") { return item[myKey].toString() }
+        return item[myKey];
+      }}
       refreshing={false}
       onRefresh={onRefresh}
     />
