@@ -49,7 +49,7 @@ const LoginScreen = () => {
         disabled={username.trim() && password.trim() ? false : true}
       />
 
-      {/* ------- modal ------- */}
+      {/* ------- forget pass modal ------- */}
 
       <Pressable
         style={{ marginTop: 20 }}

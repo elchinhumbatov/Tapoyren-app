@@ -11,6 +11,7 @@ import {
 import { Rating } from "react-native-ratings";
 import { VimeoPlayer } from "@mindtechapps/rn-vimeo-player";
 import { Tab, TabView } from "react-native-elements";
+import sanitize from 'sanitize-html';
 
 import colors from "../../config/colors";
 import { getCourse } from "../../api/courseScreenAPI";
@@ -62,11 +63,13 @@ const CourseScreen = ({ route, navigation }) => {
             <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
               <Rating
                 type='custom'
-                readonly
-                startingValue={course.rating}
                 ratingColor={colors.primary}
+                startingValue={course.rating}
+                tintColor={colors.white}
+                ratingBackgroundColor='silver'
                 imageSize={25}
                 fractions={1}
+                readonly
               />
               <Text style={{marginLeft: 5, fontSize: 18, color: colors.primary, fontWeight: '500'}}>{course.rating}</Text>
             </View>
@@ -106,12 +109,12 @@ const CourseScreen = ({ route, navigation }) => {
                 containerStyle={styles.tabContainer}
               />
             </Tab>
-            <TabView value={tabIndex} onChange={setTabIndex}>
+            <TabView value={tabIndex} onChange={setTabIndex} style={{backgroundColor: 'yellow'}}>
               <TabView.Item style={{ width: "100%" }}>
-                <CourseSections setVideoId={setVideoId} courseId={route.params.id} />
+                {tabIndex === 0 && <CourseSections setVideoId={setVideoId} courseId={route.params.id} />}
               </TabView.Item>
-              <TabView.Item style={{ width: "100%", padding: 10 }}>
-                <Text h1>{course.about}</Text>
+              <TabView.Item style={{ width: "100%", padding: 10, flex: 1 }}>
+                {tabIndex === 1 && <Text h1>{sanitize(course.about, {allowedTags: [], allowedAttributes: []})}</Text>}
               </TabView.Item>
               <TabView.Item style={{ backgroundColor: "lightgreen", width: "100%" }}>
                 <Text h1>Cart</Text>
@@ -130,23 +133,6 @@ const CourseScreen = ({ route, navigation }) => {
 export default CourseScreen;
 
 const styles = StyleSheet.create({
-  playerWrap: {
-    // flex: 1,
-  },
-  content: {
-    // flex: 2,
-  },
-  prevView: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "flex-end",
-    paddingHorizontal: 10,
-  },
-  prevText: {
-    color: "silver",
-    fontWeight: "600",
-    fontSize: 20,
-  },
   playingVideo: {
     fontSize: 20,
     fontWeight: "600",
@@ -157,6 +143,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     paddingHorizontal: 15,
+    paddingTop: 5,
   },
   price: {
     color: colors.primary,

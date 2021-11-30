@@ -6,6 +6,7 @@ const MySafeAreaView = ({children, bgColor = '#fff'}) => {
     <SafeAreaView style={[styles.container, 
       // {backgroundColor: bgColor}
     ]}>
+      <StatusBar barStyle='dark-content' />
       {children}
     </SafeAreaView>
   )

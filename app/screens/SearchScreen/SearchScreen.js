@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react";
-import { Keyboard, StyleSheet, Text, TextInput, TouchableWithoutFeedback, View, ScrollView, FlatList } from "react-native";
+import { Keyboard, StyleSheet, Text, TextInput, TouchableWithoutFeedback, View, ScrollView, FlatList, Platform, Image } from "react-native";
 import Fuse from 'fuse.js'
 
 import MySafeAreaView from "../../components/MySafeAreaView/MySafeAreaView";
@@ -27,17 +27,14 @@ const SearchScreen = ({ route, navigation }) => {
   };
 
   const handleChange = (text) => {
+    setInputValue(text);
     if (text.trim() === '') {
-      setInputValue(text);
+      setNoCourses(false);
       setCourses([]);
       return;
     }
-    setInputValue(text);
-    let result = fuse.search(inputValue);
-    if (result.length === 0) {
-      setNoCourses(true)
-    }
-    setNoCourses(false);
+    let result = fuse.search(text);
+    result.length === 0 ? setNoCourses(true) : setNoCourses(false);
     setCourses(result.map(i => i.item));
   }
 
@@ -69,7 +66,7 @@ const SearchScreen = ({ route, navigation }) => {
           <TextInput 
             style={[styles.searchInput, {borderColor: isFocused ? 'blue' : 'silver'}]}
             placeholder='Type here...'
-            clearButtonMode
+            clearButtonMode='while-editing'
             value={inputValue}
             onChangeText={handleChange}
             onFocus={()=> setIsFocused(true)}
@@ -77,7 +74,8 @@ const SearchScreen = ({ route, navigation }) => {
           />
         </View>
       </TouchableWithoutFeedback>
-        {noCourses && <Text>No courses for this request...</Text>}
+        {noCourses && <NoCoursesFound />}
+        {inputValue === '' && <Discover /> }
         <CategoryScreens
           data={courses}
           numColumns={2}
@@ -105,5 +103,33 @@ const styles = StyleSheet.create({
   flatlist: {
     padding: 10,
     borderWidth: 1
-  }
+  },
+  noCoursesWrap: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingTop: 50,
+  },
+  title: {
+    fontSize: 25,
+    fontWeight: '600',
+    marginVertical: 10
+  },
 });
+
+const NoCoursesFound = () => {
+  return (
+    <View style={styles.noCoursesWrap}>
+      <Text style={styles.title}>No matching courses</Text>
+      <Text>Try a different search.</Text>
+    </View>
+  );
+}
+const Discover = () => {
+  return (
+    <View style={styles.noCoursesWrap}>
+      <Image source={require('../../assets/img/discovery.png')} style={{width: 100, height: 100}} resizeMode='contain' />
+      <Text style={styles.title}>Discover our courses</Text>
+      <Text style={{paddingHorizontal: 10, textAlign: 'center'}}>Try discover new courses with search or browse our categories.</Text>
+    </View>
+  );
+}

@@ -6,6 +6,7 @@ import MySafeAreaView from '../../components/MySafeAreaView/MySafeAreaView';
 import commonStyles from '../../config/commonStyles';
 import CategoryScreens from '../../components/CategoryComponents/CategoryScreens';
 import CourseComponent from '../../components/CategoryComponents/CourseComponent';
+import { Image } from 'react-native';
 
 const FavoritesScreen = ({navigation}) => {
 
@@ -18,20 +19,25 @@ const FavoritesScreen = ({navigation}) => {
   };
 
   useEffect(() => {
-    let dirty = "<p>some text</p><a>some link</a>";
-    let clean = sanitize(dirty, {
-      // allowedTags: [],
-      // allowedAttributes: [],
-      transformTags: {
-        'a' : ','
-      }
-    });
-    console.log(clean)
+    // let dirty = "<p>some text</p>";
+    // let clean = sanitize(dirty, {
+    //   allowedTags: [],
+    //   allowedAttributes: [],
+    //   transformTags: {
+    //     'p' : ''
+    //   }
+    // });
+    // console.log(clean)
   }, [])
 
   return (
     <MySafeAreaView>
       <Text style={ commonStyles.screenTitle }>Favorites</Text>
+      <View style={styles.emptyWrap}>
+        <Image source={require('../../assets/img/paper.png')} style={styles.img} resizeMode='contain' />
+        <Text style={styles.title}>You favorites are emty</Text>
+        <Text>Search or browse categories to find a course for you.</Text>
+      </View>
       {/* <CategoryScreens
           data={courses} // data?
           numColumns={2}
@@ -47,4 +53,19 @@ const FavoritesScreen = ({navigation}) => {
 
 export default FavoritesScreen
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+  emptyWrap: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingTop: 50
+  },
+  img: {
+    width: 100,
+    height: 150,
+  },
+  title: {
+    fontSize: 25,
+    fontWeight: '600',
+    marginBottom: 10
+  },
+})
