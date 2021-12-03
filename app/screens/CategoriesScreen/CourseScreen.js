@@ -21,7 +21,7 @@ import CourseSections from "../../components/CategoryComponents/CourseSections";
 
 const CourseScreen = ({ route, navigation }) => {
   const [videoId, setVideoId] = useState(null);
-  const [tabIndex, setTabIndex] = useState(0);
+  const [tabIndex, setTabIndex] = useState(2);
   const [isLoading, setisLoading] = useState(false);
   const [course, setCourse] = useState({});
 
@@ -109,7 +109,7 @@ const CourseScreen = ({ route, navigation }) => {
                 containerStyle={styles.tabContainer}
               />
             </Tab>
-            <TabView value={tabIndex} onChange={setTabIndex} style={{backgroundColor: 'yellow'}}>
+            <TabView value={tabIndex} onChange={setTabIndex}>
               <TabView.Item style={{ width: "100%" }}>
                 {tabIndex === 0 && <CourseSections setVideoId={setVideoId} courseId={route.params.id} />}
               </TabView.Item>
@@ -117,7 +117,7 @@ const CourseScreen = ({ route, navigation }) => {
                 {tabIndex === 1 && <Text h1>{sanitize(course.about, {allowedTags: [], allowedAttributes: []})}</Text>}
               </TabView.Item>
               <TabView.Item style={{ backgroundColor: "lightgreen", width: "100%" }}>
-                <Text h1>Cart</Text>
+                {null}
               </TabView.Item>
             </TabView>
           </View>

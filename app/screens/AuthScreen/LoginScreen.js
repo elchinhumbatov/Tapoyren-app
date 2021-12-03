@@ -27,6 +27,7 @@ const LoginScreen = () => {
         leftIcon={{ type: "ionicon", name: "person", color: "gray" }}
         // errorMessage='ENTER A VALID ERROR HERE'
         // inputContainerStyle={{borderBottomColor: 'red'}}
+        //validation AAAAAAAAAAAAAA
       />
       <Input
         placeholder="Password"

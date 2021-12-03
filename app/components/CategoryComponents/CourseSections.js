@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import {
-  FlatList,
   SectionList,
   StyleSheet,
   Text,
   TouchableWithoutFeedback,
   View,
+  SafeAreaView,
 } from "react-native";
 
 import { getCourseSections } from "../../api/courseScreenAPI";
@@ -50,7 +50,7 @@ const SectionItem = ({
         ]}
       >
         <Ionicons
-          name={item.preview ? 'play-circle-outline' : 'lock-closed'}
+          name={item.preview ? "play-circle-outline" : "lock-closed"}
           color={colors.primary}
           size={24}
           style={{ marginRight: 5 }}
@@ -105,7 +105,7 @@ const CourseSections = ({ setVideoId, courseId }) => {
       )}
       renderSectionHeader={({ section }) => <SectionHeader section={section} />}
       extraData={selectedItemId}
-      keyExtractor={(item) => item.title}
+      keyExtractor={(item) => item.vimeoVideoId.toString()}
     />
   );
 };
