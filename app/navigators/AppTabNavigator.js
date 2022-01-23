@@ -4,11 +4,11 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "@expo/vector-icons";
 
 import colors from '../config/colors';
-import HomeScreen from '../screens/HomeScreen/HomeScreen';
 import CategoriesNavigator from './CategoriesNavigator';
 import SearchNavigator from './SearchNavigator';
 import FavoritesNavigator from './FavoritesNavigator';
 import AuthScreen from '../screens/AuthScreen/AuthScreen';
+import HomeNavigator from './HomeNavigator';
 
 
 const Tab = createBottomTabNavigator();
@@ -48,7 +48,7 @@ const AppTabNavigator = () => {
           tabBarInactiveTintColor: "gray",
         })}
       >
-        <Tab.Screen name="Home" component={HomeScreen} />
+        <Tab.Screen name="Home" component={HomeNavigator} />
         <Tab.Screen name="Search" component={SearchNavigator} />
         <Tab.Screen name="CategoriesNavigator" component={CategoriesNavigator} options={{title: 'Categories'}} />
         <Tab.Screen name="Favorite" component={FavoritesNavigator} />

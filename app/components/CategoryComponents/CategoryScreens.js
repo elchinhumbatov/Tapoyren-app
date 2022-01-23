@@ -18,7 +18,7 @@ const CategoryScreens = ({
   }
 
   const onRefresh = () => (
-    handleRefresh()
+    handleRefresh && handleRefresh()
   );
 
 

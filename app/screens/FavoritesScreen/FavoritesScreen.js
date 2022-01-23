@@ -1,12 +1,12 @@
 import React, {useEffect} from 'react'
 import { StyleSheet, Text, View } from 'react-native'
-import sanitize from 'sanitize-html';
+import { Image } from 'react-native';
 
 import MySafeAreaView from '../../components/MySafeAreaView/MySafeAreaView';
 import commonStyles from '../../config/commonStyles';
 import CategoryScreens from '../../components/CategoryComponents/CategoryScreens';
 import CourseComponent from '../../components/CategoryComponents/CourseComponent';
-import { Image } from 'react-native';
+
 
 const FavoritesScreen = ({navigation}) => {
 
@@ -19,15 +19,7 @@ const FavoritesScreen = ({navigation}) => {
   };
 
   useEffect(() => {
-    // let dirty = "<p>some text</p>";
-    // let clean = sanitize(dirty, {
-    //   allowedTags: [],
-    //   allowedAttributes: [],
-    //   transformTags: {
-    //     'p' : ''
-    //   }
-    // });
-    // console.log(clean)
+  
   }, [])
 
   return (

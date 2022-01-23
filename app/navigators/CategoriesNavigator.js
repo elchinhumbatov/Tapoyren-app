@@ -5,7 +5,9 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import CategoriesHome from "../screens/CategoriesScreen/CategoriesHome";
 import SubcategoriesScreen from "../screens/CategoriesScreen/SubcategoriesScreen";
 import SubcategoryCourses from "../screens/CategoriesScreen/SubcategoryCourses";
-import CourseScreen from "../screens/CategoriesScreen/CourseScreen";
+import CourseScreen from '../screens/CourseScreen/CourseScreen';
+import EnrollCourse from '../screens/CourseScreen/EnrollCourse';
+import InstructorProfile from "../screens/CourseScreen/InstructorProfile";
 
 const Stack = createNativeStackNavigator();
 
@@ -37,6 +39,16 @@ const CategoriesNavigator = ({ navigation }) => {
           title: route.params.title,
           animation: "fade"
         })}
+      />
+      <Stack.Screen
+        name="InstructorProfile"
+        component={InstructorProfile}
+        options={{title: 'Instructor'}}
+      />
+      <Stack.Screen
+        name="Enroll"
+        component={EnrollCourse}
+        options={({ route }) => ({ title: route.params.title })}
       />
     </Stack.Navigator>
   );

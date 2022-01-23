@@ -6,12 +6,18 @@ import colors from "../../config/colors";
 
 const LoginScreen = () => {
   const [username, setUsername] = useState("");
+  const [usernameError, setUsernameError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
   const [email, setEmail] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
 
   const handleSignIn = () => {
+    if(username.trim() == '') return setUsernameError('Username is empty')
+    else setUsernameError('')
+    if(!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(username)) return setUsernameError('Email is invalid')
+    else setUsernameError('')
     let user = { username, password, rememberMe };
     console.log(user);
   };
@@ -21,11 +27,11 @@ const LoginScreen = () => {
   return (
     <View>
       <Input
-        placeholder="Username"
+        placeholder="Email"
         value={username}
         onChangeText={setUsername}
         leftIcon={{ type: "ionicon", name: "person", color: "gray" }}
-        // errorMessage='ENTER A VALID ERROR HERE'
+        errorMessage={usernameError}
         // inputContainerStyle={{borderBottomColor: 'red'}}
         //validation AAAAAAAAAAAAAA
       />
@@ -47,7 +53,7 @@ const LoginScreen = () => {
         title="Sign In"
         buttonStyle={{ backgroundColor: colors.primary, marginTop: 15 }}
         onPress={handleSignIn}
-        disabled={username.trim() && password.trim() ? false : true}
+        // disabled={username.trim() && password.trim() ? false : true}
       />
 
       {/* ------- forget pass modal ------- */}

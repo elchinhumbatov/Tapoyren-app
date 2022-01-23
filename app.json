@@ -2,13 +2,13 @@
   "expo": {
     "name": "tapoyrenApp",
     "slug": "tapoyrenApp",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "orientation": "portrait",
     "icon": "./app/assets/icon.png",
     "splash": {
       "image": "./app/assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#0096FF"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
@@ -25,8 +25,8 @@
       "package": "com.tapoyren.TapOyren",
       "versionCode": 1,
       "adaptiveIcon": {
-        "foregroundImage": "./app/assets/adaptive-icon.png",
-        "backgroundColor": "#FFFFFF"
+        "foregroundImage": "./app/assets/icon.png",
+        "backgroundColor": "#0096FF"
       }
     },
     "web": {

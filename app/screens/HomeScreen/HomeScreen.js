@@ -1,43 +1,212 @@
-import React from "react";
-import { SafeAreaView, StyleSheet, Text, View, ScrollView } from "react-native";
+import React, { useState, useEffect, useRef } from "react";
+import {
+  StyleSheet,
+  Text,
+  View,
+  ScrollView,
+  Image,
+  Pressable,
+  Animated,
+} from "react-native";
+import * as SplashScreen from 'expo-splash-screen';
+
 import MySafeAreaView from "../../components/MySafeAreaView/MySafeAreaView";
-import LottieView from 'lottie-react-native';
+import colors from "../../config/colors";
+import { getCourses } from "../../api/searchScreenAPI";
+import HorizontalCourses from "../../components/HomeScreen/HorizontalCourses";
+import { getCourses as getCoursesBySubcatId } from '../../api/categoryScreenAPI';
+import { Ionicons } from '@expo/vector-icons';
+
 
 const HomeScreen = ({ navigation }) => {
+  const [byRating, setByRating] = useState([]);
+  const [accaCourses, setAccaCourses] = useState([]);
+  const [cfaCourses, setCfaCourses] = useState([]);
+  const fade1 = useRef(new Animated.Value(0)).current;
+  const fade2 = useRef(new Animated.Value(0)).current;
+  const fade3 = useRef(new Animated.Value(0)).current;
+
+  const sortByRating = (courses) => {
+    let sortedByRating = courses.sort((a, b) => {
+      if (+a.rating < +b.rating) return 1;
+      if (+a.rating > +b.rating) return -1;
+      return 0;
+    });
+    setByRating(sortedByRating);
+  };
+
+  const handleCourse = (id, title) => {
+    navigation.navigate("CourseScreen", { id, title });
+  };
+  const handleSeeAll = (title, courses) => {
+    navigation.navigate("SeeAllScreen", { title, courses });
+  };
+
+  const fetchCourses = async () => {
+    try {
+      await SplashScreen.preventAutoHideAsync();
+      let res = await getCourses(1);
+      let data = await res.data;
+      sortByRating(data);
+    } catch (error) {
+      console.log("homescreen", error);
+    } finally {
+      await SplashScreen.hideAsync();
+      Animated.timing(fade1, {
+        toValue: 1,
+        duration: 500,
+        delay: 200,
+        useNativeDriver: true
+      }).start();
+      Animated.timing(fade2, {
+        toValue: 1,
+        duration: 500,
+        delay: 800,
+        useNativeDriver: true
+      }).start();
+      Animated.timing(fade3, {
+        toValue: 1,
+        duration: 500,
+        delay: 1300,
+        useNativeDriver: true
+      }).start();
+    }
+  };
+  const fetchACCA = async () => {
+    try {
+      let res = await getCoursesBySubcatId(4);
+      let data = await res.data;
+      setAccaCourses(data);
+    } catch (error) {
+      console.log("homescreen fetchACCA", error);
+    }
+  };
+  const fetchCFA = async () => {
+    try {
+      let res = await getCoursesBySubcatId(5);
+      let data = await res.data;
+      setCfaCourses(data);
+    } catch (error) {
+      console.log("homescreen fetchCFA", error);
+    }
+  };
+  useEffect(() => {
+    fetchCourses();
+    fetchACCA();
+    fetchCFA();
+  }, []);
+
   return (
     <MySafeAreaView>
-      <ScrollView style={s.container}>
-        <Text>This is Home Screen!</Text>
-        <View style={s.box}></View>
-        <View style={s.box}></View>
-        <View style={s.box}></View>
-        <View style={s.box}></View>
-        <View style={s.box}></View>
-        <View style={s.box}></View>
-        <View style={s.box}></View>
-        <View style={s.box}></View>
-        <View style={s.box}></View>
-        <View style={s.box}></View>
-        <View style={s.box}></View>
+      <ScrollView>
+        
+          <View style={styles.header}>
+            <View>
+              <Animated.View style={{opacity: fade1}}><Text style={styles.headerTitle}>Tap.</Text></Animated.View>
+              <Animated.View style={{opacity: fade2}}><Text style={styles.headerTitle}>Öyrən.</Text></Animated.View>
+              <Animated.View style={{opacity: fade3}}><Text style={styles.headerTitle}>İnkişaf et.</Text></Animated.View>
+            </View>
+            <Image
+              style={styles.headerImg}
+              resizeMode="contain"
+              source={{
+                uri: "https://tapoyren.com/public/design/assets/hero-splash.png",
+              }}
+            />
+          </View>
+
+        {/* --- TOP RATED--- */}
+        <View style={[styles.topRated, styles.section]}>
+          <View style={styles.sectionTitleWrap}>
+            <Text style={styles.sectionTitle}>
+            Top Rated <Ionicons name="flame" color={'orange'} size={22} />
+            </Text>
+            <Pressable
+              onPress={() => handleSeeAll("Top Rated", byRating.slice(0, 40))}
+            >
+              <Text style={{color: colors.primary, fontSize: 18}}>See all</Text>
+            </Pressable>
+          </View>
+          <HorizontalCourses data={byRating.slice(0, 5)} handleCourse={handleCourse} />
+        </View>
+
+        {/* --- ACCA --- */}
+        <View style={[styles.randomSubcatCourses, styles.section]}>
+          <View style={styles.sectionTitleWrap}>
+            <Text style={styles.sectionTitle}>ACCA</Text>
+            <Pressable
+              onPress={() => handleSeeAll("ACCA", accaCourses)}
+            >
+              <Text style={{color: colors.primary, fontSize: 18}}>See all</Text>
+            </Pressable>
+          </View>
+          <HorizontalCourses data={accaCourses.slice(0, 5)} handleCourse={handleCourse} />
+        </View>
+
+        {/* --- CFA --- */}
+        <View style={[styles.randomSubcatCourses, styles.section]}>
+          <View style={styles.sectionTitleWrap}>
+            <Text style={styles.sectionTitle}>CFA</Text>
+            <Pressable
+              onPress={() => handleSeeAll("CFA", cfaCourses)}
+            >
+              <Text style={{color: colors.primary, fontSize: 18}}>See all</Text>
+            </Pressable>
+          </View>
+          <HorizontalCourses data={cfaCourses.slice(0, 5)} handleCourse={handleCourse} />
+        </View>
       </ScrollView>
     </MySafeAreaView>
   );
 };
 
 export default HomeScreen;
-// export default withSafeAreaViewScreens(HomeScreen);
 
-const s = StyleSheet.create({
-  container: {
-    flex: 1,
-    // justifyContent: 'center',
-    // alignItems: 'center',
-    // backgroundColor: "yellow",
+const styles = StyleSheet.create({
+  section: {
+    marginVertical: 15,
   },
-  box: {
-    width: 150,
-    height: 150,
-    backgroundColor: "lightgreen",
-    borderBottomWidth: 1,
+  header: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    paddingVertical: 40,
+    paddingLeft: 20,
+  },
+  headerImg: {
+    flex: 1,
+    marginLeft: 50,
+  },
+  headerTitle: {
+    fontWeight: "700",
+    fontSize: 30,
+    color: colors.primary,
+  },
+  sectionTitleWrap: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    padding: 10,
+    marginTop: 10,
+  },
+  sectionTitle: {
+    fontWeight: "600",
+    fontSize: 20,
   },
 });
+
+
+const TextInfo = ({txt, title}) => {
+  const [show, setShow] = useState(false);
+
+  const toggleText = () => {
+    setShow(prev => !prev)
+  }
+  return (
+    // <View style={{paddingHorizontal: 15, paddingVertical: 10, borderWidth: 1}}>
+    //   <Text style={{fontWeight: '600', fontSize: 17}}>{title}</Text>
+    //   <Text numberOfLines={show ? null : 1} style={{fontSize: 16}}>{txt}</Text>
+    //   <Pressable onPress={toggleText}><Text style={{textAlign: 'right'}}>show {show ? 'less' : 'more'}</Text></Pressable>
+    // </View>
+    null
+  )
+}

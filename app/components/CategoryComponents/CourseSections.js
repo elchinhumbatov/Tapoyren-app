@@ -30,11 +30,14 @@ const SectionItem = ({
   setVideoId,
   selectedItemId,
   setSelectedItemId,
+  scrollToTop
 }) => {
   const handlePlay = () => {
     if (item.preview) {
-      setVideoId(438371246);
+      // setVideoId(438371246);
+      setVideoId({videoId: item.vimeoVideoId, videoTitle: item.title});
       setSelectedItemId(item.id);
+      scrollToTop();
     }
   };
 
@@ -56,7 +59,7 @@ const SectionItem = ({
           style={{ marginRight: 5 }}
         />
         <View style={styles.videoInfo}>
-          <Text style={styles.sectionItemTitle}>{item.title}</Text>
+          <Text numberOfLines={1} style={styles.sectionItemTitle}>{item.title}</Text>
           <Text style={{ color: "gray" }}>
             {(item.timescale / 3600).toFixed(2)}
           </Text>
@@ -66,7 +69,7 @@ const SectionItem = ({
   );
 };
 
-const CourseSections = ({ setVideoId, courseId }) => {
+const CourseSections = ({ setVideoId, courseId, scrollToTop }) => {
   const [courseSections, setCourseSections] = useState([]);
   const [isLoading, setisLoading] = useState(false);
   const [selectedItemId, setSelectedItemId] = useState(null);
@@ -101,6 +104,7 @@ const CourseSections = ({ setVideoId, courseId }) => {
           setVideoId={setVideoId}
           selectedItemId={selectedItemId}
           setSelectedItemId={setSelectedItemId}
+          scrollToTop={scrollToTop}
         />
       )}
       renderSectionHeader={({ section }) => <SectionHeader section={section} />}
@@ -130,15 +134,18 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingHorizontal: 7,
     paddingVertical: 3,
+    borderRadius: 7,
   },
   videoInfo: {
     flex: 1,
     flexDirection: "row",
     justifyContent: "space-between",
+    paddingVertical: 13,
   },
   sectionItemTitle: {
     flex: 1,
     fontSize: 15,
+    textTransform: 'capitalize',
   },
 });
 

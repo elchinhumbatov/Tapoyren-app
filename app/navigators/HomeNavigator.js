@@ -2,24 +2,30 @@ import React from "react";
 import { StyleSheet } from "react-native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
-import SearchScreen from "../screens/SearchScreen/SearchScreen";
+import HomeScreen from "../screens/HomeScreen/HomeScreen";
+import SeeAllScreen from "../screens/HomeScreen/SeeAllScreen";
 import CourseScreen from '../screens/CourseScreen/CourseScreen';
-import InstructorProfile from '../screens/CourseScreen/InstructorProfile';
+import InstructorProfile from "../screens/CourseScreen/InstructorProfile";
 import EnrollCourse from "../screens/CourseScreen/EnrollCourse";
 
 const Stack = createNativeStackNavigator();
 
-const SearchNavigator = ({ navigation }) => {
+const HomeNavigator = ({ navigation }) => {
   return (
-    <Stack.Navigator initialRouteName="SearchScreen">
+    <Stack.Navigator initialRouteName="HomeScreen">
       <Stack.Screen
-        name="SearchScreen"
-        component={SearchScreen}
+        name="HomeScreen"
+        component={HomeScreen}
         options={{ headerShown: false }}
       />
       <Stack.Screen
         name="CourseScreen"
         component={CourseScreen}
+        options={({ route }) => ({ title: route.params.title })}
+      />
+      <Stack.Screen
+        name="SeeAllScreen"
+        component={SeeAllScreen}
         options={({ route }) => ({ title: route.params.title })}
       />
       <Stack.Screen
@@ -36,6 +42,6 @@ const SearchNavigator = ({ navigation }) => {
   );
 };
 
-export default SearchNavigator;
+export default HomeNavigator;
 
 const styles = StyleSheet.create({});
