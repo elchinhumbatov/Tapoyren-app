@@ -1,9 +1,50 @@
-import React, {useState} from "react";
-import { Image, Pressable, StyleSheet, Text, View } from "react-native";
+import React, { useState, useEffect } from "react";
+import {
+  Image,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+  ScrollView,
+} from "react-native";
+import sanitize from "sanitize-html";
+import { getInstructorCourses } from "../../api/courseScreenAPI";
+import CategoryScreens from "../../components/CategoryComponents/CategoryScreens";
+import CourseComponent from "../../components/CategoryComponents/CourseComponent";
+import Loader from "../../components/Loader/Loader";
 
-const InstructorProfile = ({ route }) => {
+const InstructorProfile = ({ route, navigation }) => {
+  const [loading, setLoading] = useState(false);
+  const [instructorObj, setInstructorObj] = useState({});
+  const [instructorCourses, setInstructorCourses] = useState([]);
+
+  const fetchInstructor = async () => {
+    try {
+      setLoading(true);
+      let res = await getInstructorCourses(route.params.instructorId);
+      let data = await res.data;
+      await setInstructorObj(data[0]);
+      let filtered = data[0].categoryCoursesDto.filter(i => i.courseId !== route.params.courseId);
+      setInstructorCourses(filtered);
+    } catch (error) {
+      console.log("error instructor page ", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchInstructor();
+  }, []);
+
+  const handleCourse = (id, title) => {
+    navigation.push("CourseScreen", { id, title });
+  };
+
+  if (loading) return <Loader />;
+
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <View style={styles.instructorWrap}>
         <View style={styles.instructorImgWrap}>
           <Image
@@ -17,17 +58,29 @@ const InstructorProfile = ({ route }) => {
           />
         </View>
         <View>
-          <Text style={styles.instructor}>{route.params.instructorName}</Text>
+          <Text style={styles.instructor}>{instructorObj.instructorName}</Text>
           <Text style={{}}>Təlimçi</Text>
         </View>
       </View>
-      <View style={styles.about}>
-        <TextInfo  title={'About'} txt={`Having a bachelor's degree at Qafqaz University, MBA majored in Finance at ADA University, being qualified with ADVANCED DIPLOMA IN ACCOUNTING AND BUSINESS of ACCA combining with my interests as well as my motivation lie in financial analysis and cost control accountant. Meanwhile working at Aztexnika LLC as a cost controller and financial analyst, I have attained several achievements such as maintaining the inventory of spare parts, the database of customers, financial reports influencing the decision-making process. Moreover, while studying at ADAU as a final project our team worked with "Baku International Sea Trade Port" (BISTP) on feasibility analysis "RORO Terminal" part of the new project of "ALAT Trade Port" which is then represented to several banks and M`} />
-      </View>
+      {instructorObj.about != "" && (
+        <View style={styles.about}>
+          <TextInfo title={"About"} txt={instructorObj.about} />
+        </View>
+      )}
       <View style={styles.courses}>
         <Text style={styles.h2}>Courses</Text>
+        <CategoryScreens
+          // data={instructorObj.categoryCoursesDto}
+          data={instructorCourses}
+          numColumns={2}
+          columnStyle={{ justifyContent: "space-between" }}
+          CBfunc={handleCourse}
+          SomeComponent={CourseComponent}
+          myKey="courseId"
+          myPadding={15}
+        />
       </View>
-    </View>
+    </ScrollView>
   );
 };
 
@@ -39,8 +92,8 @@ const styles = StyleSheet.create({
   },
   h2: {
     fontSize: 20,
-    fontWeight: '600',
-    marginVertical: 10
+    fontWeight: 'bold',
+    marginVertical: 10,
   },
   instructorWrap: {
     flexDirection: "row",
@@ -64,17 +117,27 @@ const styles = StyleSheet.create({
   },
 });
 
-const TextInfo = ({txt, title}) => {
+const TextInfo = ({ txt, title }) => {
   const [show, setShow] = useState(false);
 
   const toggleText = () => {
-    setShow(prev => !prev)
-  }
+    setShow((prev) => !prev);
+  };
   return (
     <View style={{}}>
       <Text style={styles.h2}>{title}</Text>
-      <Text numberOfLines={show ? null : 2} style={{fontSize: 16}}>{txt}</Text>
-      <Pressable onPress={toggleText}><Text style={{textAlign: 'right'}}>show {show ? 'less' : 'more'}</Text></Pressable>
+      {/* <Text numberOfLines={show ? null : 2} style={{fontSize: 16}}>{txt}</Text> */}
+      <Text h1 numberOfLines={show ? null : 2} style={{ fontSize: 16 }}>
+        {sanitize(txt, {
+          allowedTags: [],
+          allowedAttributes: [],
+        })}
+      </Text>
+      <Pressable onPress={toggleText}>
+        <Text style={{ textAlign: "right" }}>
+          show {show ? "less" : "more"}
+        </Text>
+      </Pressable>
     </View>
-  )
-}
+  );
+};

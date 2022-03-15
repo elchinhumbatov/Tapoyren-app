@@ -1,16 +1,18 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import {
-  Image,
+  Button,
+  Dimensions,
   ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from "react-native";
-import { Rating } from "react-native-ratings";
 import { VimeoPlayer } from "@mindtechapps/rn-vimeo-player";
 import { Tab, TabView } from "react-native-elements";
-import sanitize from 'sanitize-html';
+import sanitize from "sanitize-html";
+import WebView from "react-native-webview";
+import * as FileSystem from 'expo-file-system';
 
 import colors from "../../config/colors";
 import { getCourse } from "../../api/courseScreenAPI";
@@ -18,13 +20,15 @@ import Loader from "../../components/Loader/Loader";
 import MySafeAreaView from "../../components/MySafeAreaView/MySafeAreaView";
 import CourseSections from "../../components/CategoryComponents/CourseSections";
 import CourseMore from "./CourseMore";
+import InstructorInfo from "../../components/CourseComponents/instructorInfo";
+
 
 const CourseScreen = ({ route, navigation }) => {
-  const [{videoId, videoTitle}, setVideoId] = useState({});
+  const [{ videoId, videoTitle }, setVideoId] = useState({});
   const [tabIndex, setTabIndex] = useState(0);
   const [isLoading, setisLoading] = useState(false);
+  const [isVideoLoading, setIsVideoLoading] = useState(false);
   const [course, setCourse] = useState({});
-  const scrollRef = useRef();
 
   const fetchCourse = async () => {
     try {
@@ -39,12 +43,36 @@ const CourseScreen = ({ route, navigation }) => {
     }
   };
 
-  const scrollToTop = () => {
-    scrollRef.current?.scrollTo({
-      y: 0,
-      animated: true,
-    });
+  const handleDownload = () => {
+    // const uri = `https://player.vimeo.com/video/${videoId}`
+    const uri = 'http://techslides.com/demos/sample-videos/small.mp4'
+    let fileUri = FileSystem.documentDirectory + "small.mp4";
+    FileSystem.downloadAsync(uri, fileUri)
+    .then(({ uri }) => {
+      console.log('first', uri);
+    })
+    .catch(error => {
+      console.error(error);
+    })
   }
+  // const saveFile = async (fileUri) => {
+  //   const { status } = await Permissions.askAsync(Permissions.MEDIA_LIBRARY);
+  //   if (status === "granted") {
+  //       const asset = await MediaLibrary.createAssetAsync(fileUri)
+  //       await MediaLibrary.createAlbumAsync("Download", asset, false)
+  //   }
+  // }
+
+  const goToEnroll = () => {
+    const prices = {
+      priceMonthly: course.priceMonthly,
+      priceQuarterly: course.priceQuarterly,
+      priceSemianually: course.priceSemianually,
+      priceAnually: course.priceAnually,
+    }
+    // console.log(prices);
+    navigation.navigate("Enroll", { title: course.title, prices });
+  };
 
   useEffect(() => {
     fetchCourse();
@@ -54,91 +82,79 @@ const CourseScreen = ({ route, navigation }) => {
 
   return (
     <MySafeAreaView>
-      <ScrollView ref={scrollRef}>
-        <View style={styles.playerWrap}>
-          {videoId && (
-            <View style={{ height: 220 }}>
-              <VimeoPlayer videoId={videoId} loaderColor={colors.primary} />
-            </View>
-          )}
-        </View>
-        <View style={styles.content}>
-        {videoId && (
+      {videoId && (
+        <View>
+          <View style={{height: Dimensions.get("window").width / 1.78}}>
+            {/* <VimeoPlayer videoId={videoId} loaderColor={colors.primary} /> */}
+            <WebView 
+              source={{
+                uri: `https://player.vimeo.com/video/${videoId}`, 
+                headers: {"Referer": "https://tapoyren.com"}
+              }} 
+              onLoadStart={() => setIsVideoLoading(true)} 
+              onLoadEnd={() => setIsVideoLoading(false)}
+              onError={(err) => console.warn('error from video webview', err)}
+            />
+            {isVideoLoading && <View style={styles.videoLoader}><Loader /></View>}
+          </View>
           <View style={styles.playingTitle}>
-            <Text style={{fontSize: 17}}>{videoTitle}</Text>
-          </View>
-          )}
-          {/* <View style={styles.priceRating}>
-            <Text style={styles.price}>
-              &#10969;{course.priceMonthly}{" "}
-              <Text style={{ fontSize: 14 }}>aylıq - {videoId}</Text>
-            </Text>
-            <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
-              <Rating
-                type='custom'
-                ratingColor={colors.primary}
-                startingValue={course.rating}
-                tintColor={colors.white}
-                ratingBackgroundColor='silver'
-                imageSize={25}
-                fractions={1}
-                readonly
-              />
-              <Text style={{marginLeft: 5, fontSize: 18, color: colors.primary, fontWeight: '500'}}>{course.rating}</Text>
-            </View>
-          </View> */}
-          <View style={styles.instructorBlock}>
-            <View style={styles.instructorWrap}>
-              <View style={styles.instructorImgWrap}>
-                <Image
-                  resizeMode='contain'
-                  style={[styles.instructorImg, {backgroundColor: 'silver' }]}
-                  source={ course.instructorAvatar ? { uri: course.instructorAvatar } : require('../../assets/img/logo.png')}
-                />
-              </View>
-              <Text style={styles.instructor}>{course.instructorName}</Text>
-            </View>
-            <TouchableOpacity onPress={()=> navigation.navigate('InstructorProfile', {instructorName: course.instructorName, img: course.instructorAvatar})}>
-              <Text style={styles.profileBtn}>Profile</Text>
-            </TouchableOpacity>
-          </View>
-          <View style={styles.tabsWrap}>
-            <Tab
-              value={tabIndex}
-              onChange={setTabIndex}
-              indicatorStyle={{ backgroundColor: "blue" }}
-            >
-              <Tab.Item
-                title="Videos"
-                titleStyle={styles.tabTitle}
-                containerStyle={styles.tabContainer}
-              />
-              <Tab.Item
-                title="About"
-                titleStyle={styles.tabTitle}
-                containerStyle={styles.tabContainer}
-              />
-              <Tab.Item
-                title="More"
-                titleStyle={styles.tabTitle}
-                containerStyle={styles.tabContainer}
-              />
-            </Tab>
-            <TabView value={tabIndex} onChange={setTabIndex}>
-              <TabView.Item style={{ width: "100%" }}>
-                {tabIndex === 0 && <CourseSections setVideoId={setVideoId} courseId={route.params.id} scrollToTop={scrollToTop} />}
-              </TabView.Item>
-              <TabView.Item style={{ width: "100%", padding: 10, flex: 1 }}>
-                {tabIndex === 1 && <Text h1>{sanitize(course.about, {allowedTags: [], allowedAttributes: []})}</Text>}
-              </TabView.Item>
-              <TabView.Item style={{ width: "100%" }}>
-                <CourseMore courseId={course.id} title={course.title} />
-              </TabView.Item>
-            </TabView>
+            <Text style={{ fontSize: 17 }}>{videoTitle}</Text>
+            <Button onPress={handleDownload} title="Save" />
           </View>
         </View>
-      </ScrollView>
-      <TouchableOpacity style={styles.enrollBtnWrap} onPress={()=> navigation.navigate('Enroll', {title: videoTitle})}>
+      )}
+      {!videoId && <InstructorInfo navigation={navigation} course={course} courseId={route.params.id} />}
+      <Tab
+        value={tabIndex}
+        onChange={setTabIndex}
+        indicatorStyle={{ backgroundColor: "blue" }}
+      >
+        <Tab.Item
+          title="Videos"
+          titleStyle={styles.tabTitle}
+          containerStyle={styles.tabContainer}
+        />
+        <Tab.Item
+          title="About"
+          titleStyle={styles.tabTitle}
+          containerStyle={styles.tabContainer}
+        />
+        <Tab.Item
+          title="More"
+          titleStyle={styles.tabTitle}
+          containerStyle={styles.tabContainer}
+        />
+      </Tab>
+      {/* <ScrollView> */}
+        <TabView value={tabIndex} onChange={setTabIndex}>
+          <TabView.Item style={{ width: "100%"}} onMoveShouldSetResponder={e => e.stopPropagation()}>
+            <CourseSections
+              setVideoId={setVideoId}
+              courseId={route.params.id}
+            />
+          </TabView.Item>
+          <TabView.Item onMoveShouldSetResponder={e => e.stopPropagation()}>
+            <ScrollView style={{padding: 10}}>
+              {videoId && (
+                <InstructorInfo navigation={navigation} course={course} />
+              )}
+              <Text h1>
+                {sanitize(course.about, {
+                  allowedTags: [],
+                  allowedAttributes: [],
+                })}
+              </Text>
+            </ScrollView>
+          </TabView.Item>
+          <TabView.Item onMoveShouldSetResponder={e => e.stopPropagation()}>
+            <CourseMore course={course} navigation={navigation} />
+          </TabView.Item>
+        </TabView>
+      {/* </ScrollView> */}
+      <TouchableOpacity
+        style={styles.enrollBtnWrap}
+        onPress={() => goToEnroll()}
+      >
         <Text style={styles.enrollBtn}>Enroll</Text>
       </TouchableOpacity>
     </MySafeAreaView>
@@ -148,16 +164,24 @@ const CourseScreen = ({ route, navigation }) => {
 export default CourseScreen;
 
 const styles = StyleSheet.create({
+  videoLoader: {
+    position: 'absolute',
+    // top: Dimensions.get("window").width / (1.78 * 2) - 40,
+    // left: Dimensions.get("window").width / 2 - 40,
+    width: '100%',
+    height: '100%',
+    backgroundColor: '#eee'
+  },
   playingVideo: {
     fontSize: 20,
     fontWeight: "600",
-    padding: 10
+    padding: 10,
   },
   playingTitle: {
     paddingHorizontal: 15,
     paddingVertical: 10,
     borderBottomWidth: 1,
-    borderColor: 'silver'
+    borderColor: "silver",
   },
   priceRating: {
     flexDirection: "row",
@@ -170,44 +194,6 @@ const styles = StyleSheet.create({
     color: colors.primary,
     fontSize: 20,
   },
-  instructorBlock: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginTop: 10,
-    // borderTopWidth: 1,
-    borderTopColor: "gray",
-    padding: 15,
-    paddingTop: 0,
-  },
-  instructorWrap: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  instructorImgWrap: {
-    width: 60,
-    height: 60,
-    borderRadius: 30,
-    marginRight: 7,
-    overflow: 'hidden'
-  },
-  instructorImg: {
-    width: 60,
-    height: 60,
-  },
-  instructor: {
-    fontWeight: "600",
-    fontSize: 20,
-  },
-  profileBtn: {
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-    marginLeft: 4,
-    borderWidth: 1,
-    borderRadius: 10,
-    borderColor: colors.primary,
-    color: colors.primary,
-  },
   tabTitle: {
     color: "#000",
     textTransform: "capitalize",
@@ -217,14 +203,14 @@ const styles = StyleSheet.create({
     backgroundColor: "#eee",
   },
   enrollBtnWrap: {
-    backgroundColor: colors.primary, 
-    justifyContent:'center'
+    backgroundColor: colors.primary,
+    justifyContent: "center",
   },
   enrollBtn: {
     color: colors.white,
-    textAlign: 'center',
+    textAlign: "center",
     paddingVertical: 12,
-    fontWeight: '600',
+    fontWeight: "600",
     fontSize: 18,
   },
 });

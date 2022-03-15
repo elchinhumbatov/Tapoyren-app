@@ -1,7 +1,7 @@
-import axiosClient from './apiClient';
+import axiosClient, { authAxiosClient } from './apiClient';
 
 export const getCategories = (langId=1) => {
-  return axiosClient.get(`/api/Category/GetParentCategoriesByLanguageId?languageid=${langId}`)
+  return authAxiosClient.get(`/api/Category/GetParentCategoriesByLanguageId?languageid=${langId}`)
 }
 
 export const getSubcategories = (catId, langId=1) => {

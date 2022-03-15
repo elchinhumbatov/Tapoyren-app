@@ -25,7 +25,7 @@ const HorizontalCourses = ({ data, handleCourse }) => {
               {item.courseTitle}
             </Text>
             <View style={styles.priceRating}>
-              <Text style={{ fontSize: 16 }}>&#8380; {item.price}</Text>
+              <Text style={{ fontSize: 16 }}>&#8380; {item.priceMonthly}</Text>
               <Text style={{ fontSize: 16 }}>
                 <Ionicons name="time-outline" size={16} />{" "}
                 {(item.courseDuration / 3600).toFixed(2)} saat

@@ -30,14 +30,13 @@ const SectionItem = ({
   setVideoId,
   selectedItemId,
   setSelectedItemId,
-  scrollToTop
 }) => {
+
   const handlePlay = () => {
     if (item.preview) {
       // setVideoId(438371246);
       setVideoId({videoId: item.vimeoVideoId, videoTitle: item.title});
       setSelectedItemId(item.id);
-      scrollToTop();
     }
   };
 
@@ -104,7 +103,6 @@ const CourseSections = ({ setVideoId, courseId, scrollToTop }) => {
           setVideoId={setVideoId}
           selectedItemId={selectedItemId}
           setSelectedItemId={setSelectedItemId}
-          scrollToTop={scrollToTop}
         />
       )}
       renderSectionHeader={({ section }) => <SectionHeader section={section} />}
@@ -118,16 +116,19 @@ export default CourseSections;
 
 const styles = StyleSheet.create({
   list: {
-    padding: 10,
+    paddingHorizontal: 10,
   },
   sectionHeader: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginVertical: 10,
+    paddingVertical: 15,
+    paddingHorizontal: 10,
+    backgroundColor: '#fff',
   },
   sectionHeaderTitle: {
     flex: 1,
-    fontWeight: "600",
+    fontWeight: "bold",
+    fontSize: 12
   },
   sectionItem: {
     flexDirection: "row",

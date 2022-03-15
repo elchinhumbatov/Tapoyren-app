@@ -1,14 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 
-import navigatorTheme from './app/config/navigatorTheme'
-import AppTabNavigator from "./app/navigators/AppTabNavigator";
-
+import navigatorTheme from "./app/config/navigatorTheme";
+import { AuthProvider } from "./app/context/authContext";
+import PosApp from "./app/PosApp";
 
 export default function App() {
   return (
-    <NavigationContainer theme={navigatorTheme}>
-      <AppTabNavigator />
-    </NavigationContainer>
+    <AuthProvider>
+      <NavigationContainer theme={navigatorTheme}>
+        <PosApp />
+      </NavigationContainer>
+    </AuthProvider>
   );
 }

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import {
   Dimensions,
   Image,
@@ -13,9 +13,40 @@ import MySafeAreaView from "../../components/MySafeAreaView/MySafeAreaView";
 import colors from "../../config/colors";
 import LoginScreen from "./LoginScreen";
 import RegistrationScreen from "./RegistrationScreen";
+import { signIn, signUp } from "../../api/accountScreenAPI";
+import { AuthContext } from "../../context/authContext";
 
 const AuthScreen = ({ navigation }) => {
   const [isLogin, setIsLogin] = useState(true);
+  const {login: loginFromContext, setAccessToken} = useContext(AuthContext)
+
+  const loginFromParent = async (user, setLoading) => {
+    try {
+      setLoading(true);
+      let res = await signIn(user);
+      let data = res.data;
+      console.log('data', data);
+      loginFromContext(data.token);
+    } catch (error) {
+      console.log('error from login authscreen ', error.message);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  const signUpFromParent = async (newUser, setLoading) => {
+    try {
+      setLoading(true);
+      let res = await signUp(newUser)
+      let token = res.data;
+      await setAccessToken('token', token);
+      setIsLogin(true)
+    } catch (error) {
+      console.log('error from register ', error);
+    } finally {
+      setLoading(false);
+    }
+  }
 
   return (
     <MySafeAreaView>
@@ -48,7 +79,10 @@ const AuthScreen = ({ navigation }) => {
               <Text style={[styles.toggleBtnText, {color: !isLogin ? '#fff': '#000'}]}>Sign up</Text>
             </Pressable>
           </View>
-          {isLogin ? <LoginScreen /> : <RegistrationScreen /> }
+          {isLogin ? 
+            <LoginScreen loginFromParent={loginFromParent} /> : 
+            <RegistrationScreen signUpFromParent={signUpFromParent} /> 
+          }
         </View>
       </ScrollView>
     </MySafeAreaView>

@@ -8,18 +8,58 @@ import {
   View,
 } from "react-native";
 import { Input, Button, CheckBox, Overlay } from "react-native-elements";
+import * as SecureStore from 'expo-secure-store';
+
+import { signUp } from "../../api/accountScreenAPI";
 import colors from "../../config/colors";
 
-const RegistrationScreen = () => {
+
+const RegistrationScreen = ({signUpFromParent}) => {
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
+  const [emailError, setEmailError] = useState("");
   const [password, setPassword] = useState("");
+  const [passwordError, setPasswordError] = useState("");
   const [password2, setPassword2] = useState("");
+  const [password2Error, setPassword2Error] = useState("");
   const [agree, setAgree] = useState(false);
+  const [agreeError, setAgreeError] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  const handleSignUp = () => {
-    return;
+  const handleSignUp = async () => {
+    // username validation
+
+    // if(!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(email)) return setEmailError('Email is invalid')
+    // else setEmailError('')
+    // passwords validation
+    // if(password.length < 8) return setPasswordError('Password less than 8 charcters')
+    // else setPasswordError('')
+    // if(password !== password2) return setPassword2Error('Passwords doesn\'t match')
+    // else setPassword2Error('')
+    // agreement validation
+    // if (!agree) return setAgreeError(!agree)
+    // else setAgreeError(false)
+
+    let newUser = {
+      name: fullName,
+      type: "student",
+      email,
+      password
+    }
+    signUpFromParent(newUser, setLoading);
+    // try {
+    //   setLoading(true);
+    //   let res = await signUp(newUser)
+    //   let token = res.data;
+    //   await SecureStore.setItemAsync('token', token);
+    //   setIsLogin(true)
+    //   console.log(newUser);
+    // } catch (error) {
+    //   console.log('error from register ', error);
+    // } finally {
+    //   setLoading(false);
+    // }
   };
 
   return (
@@ -36,6 +76,8 @@ const RegistrationScreen = () => {
           value={email}
           onChangeText={setEmail}
           leftIcon={{ type: "ionicon", name: "mail", color: "gray" }}
+          errorMessage={emailError}
+          inputContainerStyle={emailError && {borderBottomColor: 'red'}}
         />
         <Input
           placeholder="Password"
@@ -43,6 +85,8 @@ const RegistrationScreen = () => {
           onChangeText={setPassword}
           leftIcon={{ type: "ionicon", name: "lock-closed", color: "gray" }}
           secureTextEntry
+          errorMessage={passwordError}
+          inputContainerStyle={passwordError && {borderBottomColor: 'red'}}
         />
         <Input
           placeholder="Confirm Password"
@@ -50,6 +94,8 @@ const RegistrationScreen = () => {
           onChangeText={setPassword2}
           leftIcon={{ type: "ionicon", name: "lock-closed", color: "gray" }}
           secureTextEntry
+          errorMessage={password2Error}
+          inputContainerStyle={password2Error && {borderBottomColor: 'red'}}
         />
         <View style={{ flexDirection: "row", alignItems: "center" }}>
           <CheckBox
@@ -57,20 +103,24 @@ const RegistrationScreen = () => {
             checked={agree}
             textStyle={{ fontWeight: "500", fontSize: 16 }}
             containerStyle={{
-              backgroundColor: null,
+              backgroundColor: 'transparent',
               padding: 0,
               marginRight: 0,
+              borderWidth: 0,
             }}
-            onPress={() => setAgree((prev) => !prev)}
+            onPress={() => {setAgree(prev => !prev)}}
           />
           <Pressable onPress={() => setModalVisible(true)}>
             <Text style={styles.terms}>Terms & Conditions</Text>
           </Pressable>
         </View>
+        {agreeError && <Text style={{paddingLeft: 10, color: 'red'}}>Please read and agree with the terms</Text>}
         <Button
           title="Sign Up"
           buttonStyle={{ backgroundColor: colors.primary, marginTop: 15 }}
           onPress={handleSignUp}
+          disabled={fullName.trim() && email.trim() && password.trim() && password2.trim() ? false : true}
+          loading = {loading}
         />
 
         {/* ------ terms modal ------ */}

@@ -7,8 +7,8 @@ import colors from '../config/colors';
 import CategoriesNavigator from './CategoriesNavigator';
 import SearchNavigator from './SearchNavigator';
 import FavoritesNavigator from './FavoritesNavigator';
-import AuthScreen from '../screens/AuthScreen/AuthScreen';
 import HomeNavigator from './HomeNavigator';
+import AccountNavigator from './AccountNavigator';
 
 
 const Tab = createBottomTabNavigator();
@@ -52,7 +52,7 @@ const AppTabNavigator = () => {
         <Tab.Screen name="Search" component={SearchNavigator} />
         <Tab.Screen name="CategoriesNavigator" component={CategoriesNavigator} options={{title: 'Categories'}} />
         <Tab.Screen name="Favorite" component={FavoritesNavigator} />
-        <Tab.Screen name="Account" component={AuthScreen} />
+        <Tab.Screen name="Account" component={AccountNavigator} />
       </Tab.Navigator>
   )
 }

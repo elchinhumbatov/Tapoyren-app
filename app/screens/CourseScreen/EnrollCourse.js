@@ -3,31 +3,46 @@ import { StyleSheet, ScrollView, Text, TextInput, View } from "react-native";
 
 import { PricingCard } from "react-native-elements";
 
-const EnrollCourse = () => {
+const EnrollCourse = ({route}) => {
+  const {priceMonthly, priceQuarterly, priceSemianually, priceAnually} = route.params.prices;
+
+  const handleEnroll = (name) => {
+    alert(name + ' enrolled')
+  }
   return (
     <ScrollView>
-      <PricingCard
+      {!!priceMonthly && <PricingCard
         color="#4f9deb"
-        title="Free"
-        price="₼0"
-        info={["1 User", "Basic Support", "All Core Features"]}
+        title="Monthly"
+        price={"₼ "+ priceMonthly}
+        info={["Some basic info if u want"]}
         button={{ title: "  GET STARTED", icon: "payments" }}
-        onButtonPress={() => alert('YAY!!')}
-      />
-      <PricingCard
+        onButtonPress={() => handleEnroll('Monthly')}
+      />}
+      {!!priceQuarterly && <PricingCard
         color="#A72CE9"
-        title="Starter"
-        price="₼9.99"
-        info={["5 User", "Basic Support", "All Core Features"]}
-        button={{ title: "GET STARTED", icon: "flight-takeoff" }}
-      />
-      <PricingCard
+        title="Quarterly"
+        price={"₼"+ priceQuarterly}
+        info={["Some basic info if u want"]}
+        button={{ title: "  GET STARTED", icon: "payments" }}
+        onButtonPress={() => handleEnroll('Quarterly')}
+      />}
+      {!!priceSemianually && <PricingCard
+        color="gray"
+        title="Semianually"
+        price={"₼"+ priceSemianually}
+        info={["Some basic info if u want"]}
+        button={{ title: "  GET STARTED", icon: "payments" }}
+        onButtonPress={() => handleEnroll('Semianually')}
+      />}
+      {!!priceAnually && <PricingCard
         color="lightgreen"
-        title="Pro"
-        price="₼19.99"
-        info={["10 Users", "Basic Support", "All Core Features"]}
-        button={{ title: "GET STARTED", icon: "flight-takeoff" }}
-      />
+        title="Anually"
+        price={"₼"+ priceAnually}
+        info={["Some basic info if u want"]}
+        button={{ title: "  GET STARTED", icon: "payments" }}
+        onButtonPress={() => handleEnroll('Anually')}
+      />}
     </ScrollView>
   );
 };

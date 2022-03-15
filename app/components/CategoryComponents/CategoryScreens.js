@@ -8,7 +8,8 @@ const CategoryScreens = ({
   CBfunc = null,
   SomeComponent = null,
   myKey,
-  handleRefresh
+  handleRefresh,
+  myPadding = 25
 }) => {
   const renderItem = ({ item }) => {
     if (item.myErr) {
@@ -26,7 +27,7 @@ const CategoryScreens = ({
     <FlatList
       data={data}
       renderItem={renderItem}
-      contentContainerStyle={styles.flatlist}
+      contentContainerStyle={{padding: myPadding}}
       numColumns={numColumns}
       columnWrapperStyle={columnStyle}
       // ListEmptyComponent={<Text>Please try again later</Text>}

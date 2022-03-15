@@ -40,7 +40,7 @@ const CourseComponent = ({ item, onPress }) => {
           </Text>
           <View>
             <View style={styles.info}>
-              <Text style={{}}>&#8380; {item.price}</Text>
+              <Text style={{}}>&#8380; {item.priceMonthly}</Text>
               <Text style={{}}>
                 {item.rating} <Ionicons name="star" color={colors.primary} />
               </Text>

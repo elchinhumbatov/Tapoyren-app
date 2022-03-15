@@ -9,4 +9,7 @@ export const getInstructorCourses = (id) => {
 export const getCourseSections = (id) => {
   return axiosClient.get(`api/CourseSection/GetByCourseId/${id}`);
 }
+export const setCourseRating = (data) => {
+  return axiosClient.post(`/api/CourseRating`, data);
+}
 
