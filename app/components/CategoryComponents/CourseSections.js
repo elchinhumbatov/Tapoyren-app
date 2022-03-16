@@ -73,10 +73,6 @@ const CourseSections = ({ setVideoId, courseId, scrollToTop }) => {
   const [isLoading, setisLoading] = useState(false);
   const [selectedItemId, setSelectedItemId] = useState(null);
 
-  useEffect(() => {
-    fetchSections();
-  }, []);
-
   const fetchSections = async () => {
     try {
       setisLoading(true);
@@ -90,6 +86,14 @@ const CourseSections = ({ setVideoId, courseId, scrollToTop }) => {
       setisLoading(false);
     }
   };
+
+  useEffect(() => {
+    let mounted = true;
+    if (mounted) fetchSections();
+    return () => { 
+      mounted = false;
+    }
+  }, []);
 
   if (isLoading) return <Loader />;
 

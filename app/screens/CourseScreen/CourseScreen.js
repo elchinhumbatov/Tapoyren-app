@@ -75,7 +75,11 @@ const CourseScreen = ({ route, navigation }) => {
   };
 
   useEffect(() => {
-    fetchCourse();
+    let mounted = true;
+    if(mounted) fetchCourse();
+    return () => {
+      mounted = false;
+    }
   }, [route.params.id]);
 
   if (isLoading) return <Loader />;
@@ -94,6 +98,7 @@ const CourseScreen = ({ route, navigation }) => {
               onLoadStart={() => setIsVideoLoading(true)} 
               onLoadEnd={() => setIsVideoLoading(false)}
               onError={(err) => console.warn('error from video webview', err)}
+              allowsFullscreenVideo={true}
             />
             {isVideoLoading && <View style={styles.videoLoader}><Loader /></View>}
           </View>

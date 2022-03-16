@@ -7,6 +7,7 @@ import MySafeAreaView from "../../components/MySafeAreaView/MySafeAreaView";
 import { AuthContext } from "../../context/authContext";
 import commonStyles from "../../config/commonStyles";
 import colors from "../../config/colors";
+import { Switch } from "react-native-elements";
 
 const listItems = [
   {icon: 'settings-outline', txt: 'Profile Info', func: 'settings'},
@@ -20,7 +21,7 @@ const listItems = [
 
 const AccountScreen = ({navigation}) => {
   const { logout, userData, getAccessToken } = useContext(AuthContext);
-  // const [user, setUser] = useState({});
+  const [checked, setChecked] = useState(false);
 
   // const awaitToken = async () => {
   //   let token = await getAccessToken();
@@ -63,6 +64,15 @@ const AccountScreen = ({navigation}) => {
           </View>
         </View>
         <View style={styles.content}>
+          <View style={styles.listItem}>
+            <View style={styles.left}>
+              <Ionicons name='moon-outline' size={25} color={colors.primary} />
+            </View>
+            <View style={styles.right}>
+              <Text style={styles.listItemTitle}>Dark Theme</Text>
+              <Switch value={checked} onValueChange={(value) => setChecked(value)} />
+            </View>
+          </View>
 
           {listItems.map(item => (
             <TouchableOpacity onPress={() => handleNavigate(item.func)} key={item.txt}>
@@ -80,11 +90,6 @@ const AccountScreen = ({navigation}) => {
 
         </View>
       </ScrollView>
-      {/* <View>
-        <Text>This is Account page of the user</Text>
-        <Text>here will be the user info of {user.given_name}</Text>
-        <Button title="LOGOUT" onPress={() => logout()} />
-      </View> */}
     </MySafeAreaView>
   );
 };

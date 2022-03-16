@@ -25,7 +25,11 @@ const SubcategoriesScreen = ({ route, navigation }) => {
   };
 
   useEffect(() => {
-    fetchSubCategories();
+    let mounted = true;
+    if(mounted) fetchSubCategories();
+    return () => {
+      mounted = false;
+    }
   }, []);
 
 

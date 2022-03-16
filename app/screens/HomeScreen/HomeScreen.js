@@ -91,9 +91,16 @@ const HomeScreen = ({ navigation }) => {
     }
   };
   useEffect(() => {
-    fetchCourses();
-    fetchACCA();
-    fetchCFA();
+    let mounted = true;
+    if(mounted) {
+      fetchCourses();
+      fetchACCA();
+      fetchCFA();
+    }
+    return () => {
+      mounted = false;
+    }
+    
   }, []);
 
   return (

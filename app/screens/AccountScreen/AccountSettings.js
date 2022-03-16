@@ -1,11 +1,12 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
+import MySafeAreaView from '../../components/MySafeAreaView/MySafeAreaView';
 
 const AccountSettings = () => {
   return (
-    <View>
-      <Text>AccountSettings</Text>
-    </View>
+    <MySafeAreaView>
+      <Text>asdsa</Text>
+    </MySafeAreaView> 
   )
 }
 

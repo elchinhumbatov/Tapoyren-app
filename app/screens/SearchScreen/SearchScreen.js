@@ -53,7 +53,11 @@ const SearchScreen = ({ route, navigation }) => {
   }
 
   useEffect(() => {
-    fetchCourses();
+    let mounted = true;
+    if(mounted) fetchCourses();
+    return () => {
+      mounted = false;
+    }
   }, []);
 
   if (isLoading) return <Loader />

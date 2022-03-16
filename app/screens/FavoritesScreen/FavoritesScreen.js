@@ -19,7 +19,11 @@ const FavoritesScreen = ({navigation}) => {
   };
 
   useEffect(() => {
-  
+    // let mounted = true;
+    // if(mounted) fetchToken();
+    // return () => {
+    //   mounted = false;
+    // }
   }, [])
 
   return (

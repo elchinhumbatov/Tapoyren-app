@@ -18,14 +18,14 @@ import { AuthContext } from "../../context/authContext";
 
 const AuthScreen = ({ navigation }) => {
   const [isLogin, setIsLogin] = useState(true);
-  const {login: loginFromContext, setAccessToken} = useContext(AuthContext)
+  const {login: loginFromContext} = useContext(AuthContext)
 
   const loginFromParent = async (user, setLoading) => {
     try {
       setLoading(true);
       let res = await signIn(user);
       let data = res.data;
-      console.log('data', data);
+      console.log('data after signin api', data);
       loginFromContext(data.token);
     } catch (error) {
       console.log('error from login authscreen ', error.message);
@@ -38,8 +38,6 @@ const AuthScreen = ({ navigation }) => {
     try {
       setLoading(true);
       let res = await signUp(newUser)
-      let token = res.data;
-      await setAccessToken('token', token);
       setIsLogin(true)
     } catch (error) {
       console.log('error from register ', error);

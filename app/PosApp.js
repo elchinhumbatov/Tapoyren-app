@@ -4,21 +4,26 @@ import { refresh } from "./api/accountScreenAPI";
 
 import { AuthContext } from "./context/authContext";
 import AppTabNavigator from "./navigators/AppTabNavigator";
-import { AppLoading } from "expo-app-loading";
 import Loader from "./components/Loader/Loader";
 
 const PosApp = () => {
   const [tokenIsFetched, setTokenIsFetched] = useState(false);
-  const { login, getAccessToken } = useContext(AuthContext);
+  const { login, logout, getAccessToken } = useContext(AuthContext);
 
   const fetchToken = async () => {
     let token = await getAccessToken();
+    console.log('posapp init', token);
     if (token) {
       try {
         let res = await refresh();
         let data = await res.data;
         console.log('posApp ', data)
-        await login(data.token);
+        if (data.isAuthenticated) {
+          await login(data.token);
+        } else {
+          logout();
+        }
+        
       } catch (error) {
         console.log("error from app.js", error);
       } finally {
@@ -29,7 +34,11 @@ const PosApp = () => {
   };
 
   useEffect(() => {
-    fetchToken();
+    let mounted = true;
+    if(mounted) fetchToken();
+    return () => {
+      mounted = false;
+    }
   }, []);
 
   return (

@@ -34,7 +34,11 @@ const InstructorProfile = ({ route, navigation }) => {
   };
 
   useEffect(() => {
-    fetchInstructor();
+    let mounted = true;
+    if(mounted) fetchInstructor();
+    return () => {
+      mounted = false;
+    }
   }, []);
 
   const handleCourse = (id, title) => {

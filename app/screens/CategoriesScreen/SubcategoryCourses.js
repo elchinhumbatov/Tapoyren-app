@@ -26,7 +26,11 @@ const SubcategoryCourses = ({ navigation, route }) => {
   };
 
   useEffect(() => {
-    fetchCourses();
+    let mounted = true;
+    if(mounted) fetchCourses();
+    return () => {
+      mounted = false;
+    }
   }, []);
 
   const handleCourse = (id, title) => {

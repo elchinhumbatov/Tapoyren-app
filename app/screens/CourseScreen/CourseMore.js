@@ -36,9 +36,7 @@ const CourseMore = ({ course, navigation }) => {
     }
     try {
       let res = await setCourseRating(data);
-      if (res.status === 200) {
-        setRateAnim(false);
-      }
+      if (res.status === 200) setRateAnim(false);
     } catch (error) {
       console.log('error rate comlete ', error.message)
     }
@@ -49,7 +47,7 @@ const CourseMore = ({ course, navigation }) => {
   }
   const handleRate = () => { isAuth ? setRateModalVisible(true) : toLogin() }
   const toLogin = () => { navigation.navigate('Account', { screen: 'AuthScreen' }) }
-  const handleFavorite = () => {};
+  const handleFavorite = () => { isAuth ? alert('Added to Fav') : toLogin() };
 
   return (
     <View style={styles.container}>

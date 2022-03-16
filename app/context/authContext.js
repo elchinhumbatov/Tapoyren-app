@@ -13,6 +13,7 @@ const AuthProvider = ({children}) => {
   }
   const getAccessToken = async () => {
     let result = await SecureStore.getItemAsync('token');
+    console.log('result', result)
     return result;
   }
 
@@ -27,6 +28,7 @@ const AuthProvider = ({children}) => {
   }
 
   const logout = async () => {
+    setUserData({});
     setAccessToken('');
     setIsAuth(false);
   };

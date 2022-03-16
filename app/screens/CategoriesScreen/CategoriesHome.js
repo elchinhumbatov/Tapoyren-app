@@ -27,7 +27,11 @@ const CategoriesHome = ({ navigation }) => {
   };
 
   useEffect(() => {
-    fetchCategories();
+    let mounted = true;
+    if(mounted) fetchCategories();
+    return () => {
+      mounted = false;
+    }
   }, []);
 
   const handleCategory = (categoryId, categoryTitle) => {
