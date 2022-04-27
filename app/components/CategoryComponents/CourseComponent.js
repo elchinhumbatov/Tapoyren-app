@@ -40,7 +40,9 @@ const CourseComponent = ({ item, onPress }) => {
           </Text>
           <View>
             <View style={styles.info}>
-              <Text style={{}}>&#8380; {item.priceMonthly}</Text>
+              {item.isEnrolled === null ? 
+              <Text>&#8380; {item.priceMonthly}</Text> : 
+              <Text style={{color: colors.primary, fontWeight: 'bold'}}>Enrolled</Text>}
               <Text style={{}}>
                 {item.rating} <Ionicons name="star" color={colors.primary} />
               </Text>

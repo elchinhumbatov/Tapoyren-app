@@ -47,7 +47,7 @@ const CourseMore = ({ course, navigation }) => {
   }
   const handleRate = () => { isAuth ? setRateModalVisible(true) : toLogin() }
   const toLogin = () => { navigation.navigate('Account', { screen: 'AuthScreen' }) }
-  const handleFavorite = () => { isAuth ? alert('Added to Fav') : toLogin() };
+  // const handleFavorite = () => { isAuth ? alert('Added to Fav') : toLogin() };
 
   return (
     <View style={styles.container}>
@@ -63,12 +63,12 @@ const CourseMore = ({ course, navigation }) => {
           <Text style={styles.itemTxt}>Rate this course</Text>
         </View>
       </Pressable>
-      <Pressable onPress={handleFavorite}>
+      {/* <Pressable onPress={handleFavorite}>
         <View style={styles.itemWrap}>
           <Ionicons name="heart-outline" size={20} />
-          <Text style={styles.itemTxt}>Add to favorites</Text>
+          <Text style={styles.itemTxt}>Add to fav</Text>
         </View>
-      </Pressable>
+      </Pressable> */}
       {/* <Pressable onPress={handleBug}>
         <View style={styles.itemWrap}>
           <Ionicons name="bug-outline" size={20} />

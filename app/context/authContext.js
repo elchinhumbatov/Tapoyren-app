@@ -2,6 +2,8 @@ import React, {createContext, useState} from 'react';
 import * as SecureStore from 'expo-secure-store';
 import jwtDecode from 'jwt-decode';
 
+import { refresh } from '../api/accountScreenAPI';
+
 const AuthContext = createContext(null);
 
 const AuthProvider = ({children}) => {
@@ -16,9 +18,28 @@ const AuthProvider = ({children}) => {
     console.log('result', result)
     return result;
   }
+  const refreshAccessToken = async () => {
+    let token = await getAccessToken();
+    if (token) {
+      try {
+        let res = await refresh();
+        let data = await res.data;
+        console.log('authcontext data ', data)
+        if (data.isAuthenticated) {
+          login(data.token);
+        } else {
+          logout();
+        }
+      } catch (error) {
+        console.log("error from authcontext", error);
+      } finally {
+        return true
+      }
+    }
+  }
 
   const login = async (token) => {
-    console.log('token from auth login func ', token)
+    console.log('token from authcontext login ', token)
     if (token) {
       let decoded = await jwtDecode(token);
       setUserData(decoded);
@@ -40,6 +61,7 @@ const AuthProvider = ({children}) => {
         userData,
         setAccessToken,
         getAccessToken,
+        refreshAccessToken,
         login,
         logout,
       }}>

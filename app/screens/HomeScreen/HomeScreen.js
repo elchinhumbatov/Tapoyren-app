@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import {
   StyleSheet,
   Text,
@@ -16,12 +16,14 @@ import { getCourses } from "../../api/searchScreenAPI";
 import HorizontalCourses from "../../components/HomeScreen/HorizontalCourses";
 import { getCourses as getCoursesBySubcatId } from '../../api/categoryScreenAPI';
 import { Ionicons } from '@expo/vector-icons';
+import { AuthContext } from "../../context/authContext";
 
 
 const HomeScreen = ({ navigation }) => {
   const [byRating, setByRating] = useState([]);
   const [accaCourses, setAccaCourses] = useState([]);
   const [cfaCourses, setCfaCourses] = useState([]);
+  const {isAuth} = useContext(AuthContext);
   const fade1 = useRef(new Animated.Value(0)).current;
   const fade2 = useRef(new Animated.Value(0)).current;
   const fade3 = useRef(new Animated.Value(0)).current;
@@ -101,7 +103,7 @@ const HomeScreen = ({ navigation }) => {
       mounted = false;
     }
     
-  }, []);
+  }, [isAuth]);
 
   return (
     <MySafeAreaView>

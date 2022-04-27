@@ -15,6 +15,7 @@ import commonStyles from '../../config/commonStyles';
 
 
 const HorizontalCourses = ({ data, handleCourse }) => {
+  // console.log(data)
   const renderItem = ({ item }) => {
     return (
       <TouchableOpacity onPress={() => handleCourse(item.courseId, item.courseTitle)}>
@@ -25,7 +26,13 @@ const HorizontalCourses = ({ data, handleCourse }) => {
               {item.courseTitle}
             </Text>
             <View style={styles.priceRating}>
-              <Text style={{ fontSize: 16 }}>&#8380; {item.priceMonthly}</Text>
+              {
+                item.isEnrolled === null ? (
+                  <Text style={{ fontSize: 16 }}>&#8380; {item.priceMonthly}</Text>
+                ) : (
+                  <Text style={{color: colors.primary, fontWeight: 'bold'}}>Enrolled</Text>
+                )
+              }
               <Text style={{ fontSize: 16 }}>
                 <Ionicons name="time-outline" size={16} />{" "}
                 {(item.courseDuration / 3600).toFixed(2)} saat

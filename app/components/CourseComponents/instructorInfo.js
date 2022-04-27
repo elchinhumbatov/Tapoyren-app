@@ -19,7 +19,7 @@ const InstructorInfo = ({navigation, course, courseId}) => {
         </View>
         <View style={{flex: 1}}>
           <Text style={styles.instructor}>{course.instructorName}</Text>
-          <Text style={styles.secondary}>Instructor</Text>
+          <Text style={styles.secondary}>Təlimçi</Text>
         </View>
       </View>
       <TouchableOpacity
