@@ -2,16 +2,16 @@ import React from "react";
 import { StyleSheet } from "react-native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
-import FavoritesScreen from "../screens/FavoritesScreen/FavoritesScreen";
+import MyCoursesScreen from "../screens/MyCoursesScreen/MyCoursesScreen";
 
 const Stack = createNativeStackNavigator();
 
-const FavoritesNavigator = ({ navigation }) => {
+const MyCoursesNavigator = ({ navigation }) => {
   return (
-    <Stack.Navigator initialRouteName="FavoritesScreen">
+    <Stack.Navigator initialRouteName="MyCoursesScreen">
       <Stack.Screen
-        name="FavoritesScreen"
-        component={FavoritesScreen}
+        name="MyCoursesScreen"
+        component={MyCoursesScreen}
         options={{ headerShown: false }}
       />
       {/* <Stack.Screen
@@ -33,6 +33,6 @@ const FavoritesNavigator = ({ navigation }) => {
   );
 };
 
-export default FavoritesNavigator;
+export default MyCoursesNavigator;
 
 const styles = StyleSheet.create({});

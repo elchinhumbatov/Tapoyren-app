@@ -6,7 +6,7 @@ import { Ionicons } from "@expo/vector-icons";
 import colors from '../config/colors';
 import CategoriesNavigator from './CategoriesNavigator';
 import SearchNavigator from './SearchNavigator';
-import FavoritesNavigator from './FavoritesNavigator';
+import MyCoursesNavigator from './MyCoursesNavigator';
 import HomeNavigator from './HomeNavigator';
 import AccountNavigator from './AccountNavigator';
 
@@ -32,8 +32,8 @@ const AppTabNavigator = () => {
               case "CategoriesNavigator":
                 iconName = focused ? "grid" : "grid-outline";
                 break;
-              case "Favorite":
-                iconName = focused ? "heart" : "heart-outline";
+              case "MyLearning":
+                iconName = focused ? "book" : "book-outline";
                 break;
               case "Account":
                 iconName = focused ? "person" : "person-outline";
@@ -51,7 +51,7 @@ const AppTabNavigator = () => {
         <Tab.Screen name="Home" component={HomeNavigator} />
         <Tab.Screen name="Search" component={SearchNavigator} />
         <Tab.Screen name="CategoriesNavigator" component={CategoriesNavigator} options={{title: 'Categories'}} />
-        <Tab.Screen name="Favorite" component={FavoritesNavigator} />
+        <Tab.Screen name="MyLearning" component={MyCoursesNavigator} options={{title: 'My Courses'}} />
         <Tab.Screen name="Account" component={AccountNavigator} />
       </Tab.Navigator>
   )

@@ -1,4 +1,4 @@
-import { authAxiosClient } from './apiClient';
+import axiosClient, { authAxiosClient } from './apiClient';
 
 
 export const signUp = (user) => {
@@ -9,5 +9,11 @@ export const signIn = async (user) => {
 }
 export const refresh = async () => {
   return authAxiosClient.post(`/api/User/refresh-token`)
+}
+export const forgetPassword = async (email) => {
+  return axiosClient.post(`/api/User/forgot-password`, email)
+}
+export const getMyCourses = async (id) => {
+  return authAxiosClient.get(`/api/CourseStudent/GetActiveCoursesByStudentId/${id}`)
 }
 

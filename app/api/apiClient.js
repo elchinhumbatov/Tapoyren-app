@@ -1,14 +1,12 @@
 import axios from 'axios';
 import * as SecureStore from 'expo-secure-store';
 
-
 const axiosClient = axios.create({
   baseURL: `http://tapoyren.morooq.az/`,
   headers: {
     'Accept': 'application/json',
     'Content-Type': 'application/json'
   },
-  // withCredentials: true
 });
 export const authAxiosClient = axios.create({
   baseURL: `http://tapoyren.morooq.az/`,
@@ -22,9 +20,9 @@ export const authAxiosClient = axios.create({
 authAxiosClient.interceptors.request.use(
   async (config) => {
     const token = await SecureStore.getItemAsync('token');
-    console.log('interceptor token ',token)
+    // console.log('interceptor token ',token)
     if (token) config.headers.Authorization = `Bearer ${token}`;
-    console.log('config.headers is ', config.headers);
+    // console.log('config.headers is ', config.headers);
     return config;
   },
   (error) => {
@@ -34,12 +32,14 @@ authAxiosClient.interceptors.request.use(
 
 authAxiosClient.interceptors.response.use(
   response => {
+    // console.log('interceptors resp', response)
     return response;
   },
   error => {
     let res = error.response;
     if (res.status == 401) {
-      console.log('error interceptors 401 code ')
+      console.warn('error interceptors 401 code ')
+
       // window.location.href = “https://example.com/login”;
       // refresh token ()
     }

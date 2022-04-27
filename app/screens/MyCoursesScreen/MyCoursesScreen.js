@@ -1,17 +1,34 @@
-import React, {useEffect} from 'react'
-import { StyleSheet, Text, View } from 'react-native'
+import React, {useEffect, useState, useContext} from 'react'
+import { Button, StyleSheet, Text, View } from 'react-native'
 import { Image } from 'react-native';
 
 import MySafeAreaView from '../../components/MySafeAreaView/MySafeAreaView';
 import commonStyles from '../../config/commonStyles';
 import CategoryScreens from '../../components/CategoryComponents/CategoryScreens';
 import CourseComponent from '../../components/CategoryComponents/CourseComponent';
+import Loader from '../../components/Loader/Loader';
+import { getMyCourses } from '../../api/accountScreenAPI';
+import {AuthContext} from '../../context/authContext'
 
 
-const FavoritesScreen = ({navigation}) => {
+const MyCoursesScreen = ({navigation}) => {
+  const [courses, setCourses] = useState(null);
+  const [loader, setLoader] = useState(true);
+  const {isAuth, userData} = useContext(AuthContext);
+  
 
-  const fetchCourses = () => {
-    // side effect
+  const fetchMyCourses = () => {
+    try {
+      setLoader(true);
+      if(!isAuth) return;
+      const res = getMyCourses(userData.id);
+      const data = res.data;
+      console.log('data from mycourses', data)
+    } catch (error) {
+      console.log('error from myCourses ', error)
+    } finally {
+      setLoader(false)
+    }
   };
   
   const handleCourse = (id, title) => {
@@ -19,20 +36,23 @@ const FavoritesScreen = ({navigation}) => {
   };
 
   useEffect(() => {
-    // let mounted = true;
-    // if(mounted) fetchToken();
-    // return () => {
-    //   mounted = false;
-    // }
-  }, [])
+    let mounted = true;
+    if(mounted) fetchMyCourses();
+    return () => {
+      mounted = false;
+    }
+  }, []);
+
+  if(loader) return <Loader />
 
   return (
     <MySafeAreaView>
-      <Text style={ commonStyles.screenTitle }>Favorites</Text>
+      <Text style={ commonStyles.screenTitle }>My Courses</Text>
       <View style={styles.emptyWrap}>
         <Image source={require('../../assets/img/paper.png')} style={styles.img} resizeMode='contain' />
-        <Text style={styles.title}>You favorites are emty</Text>
+        <Text style={styles.title}>No enrolled course yet</Text>
         <Text>Search or browse categories to find a course for you.</Text>
+        <Button title='fetch' onPress={fetchMyCourses} />
       </View>
       {/* <CategoryScreens
           data={courses} // data?
@@ -47,7 +67,7 @@ const FavoritesScreen = ({navigation}) => {
   )
 }
 
-export default FavoritesScreen
+export default MyCoursesScreen
 
 const styles = StyleSheet.create({
   emptyWrap: {

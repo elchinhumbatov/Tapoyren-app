@@ -1,6 +1,7 @@
 import React, { useState, useContext } from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import { Button, CheckBox, Input, Overlay } from "react-native-elements";
+import { forgetPassword } from "../../api/accountScreenAPI";
 
 import colors from "../../config/colors";
 
@@ -9,12 +10,13 @@ const LoginScreen = ({loginFromParent}) => {
   const [usernameError, setUsernameError] = useState("");
   const [password, setPassword] = useState("");
   const [passwordError, setPasswordError] = useState("");
-  const [rememberMe, setRememberMe] = useState(false);
+  // const [rememberMe, setRememberMe] = useState(false);
   const [email, setEmail] = useState("");
   const [emailError, setEmailError] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
   // const {setUser} = useContext(UserContext);
   const [loading, setLoading] = useState(false);
+  const [loadingReset, setLoadingReset] = useState(false);
 
   const handleSignIn = async () => {
     // username validation
@@ -25,28 +27,23 @@ const LoginScreen = ({loginFromParent}) => {
     // else setPasswordError('')
     let user = {
         email: username,
-        name: "Elchin",
         password,
-        type: "student",
     }
     loginFromParent(user, setLoading);
-
-    // try {
-    //   setLoading(true);
-    //   let res = await signIn(user);
-    //   let data = res.data;
-    //   console.log('data', data);
-    //   login(data.token);
-    // } catch (error) {
-    //   console.log('error from login ', error.message);
-    // } finally {
-    //   setLoading(false);
-    // }
   };
-  const handleResetPassword = () => {
-    // console.log(user);
-    if(!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(email)) return setEmailError('Email is invalid')
-    else setEmailError('')
+  const handleResetPassword = async () => {
+    // if(!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(email)) return setEmailError('Email is invalid')
+    // else setEmailError('')
+    try {
+      setLoadingReset(true);
+      let res = await forgetPassword(email);
+      let data = await res.data;
+      console.log(data)
+    } catch (error) {
+      console.log('reset pass error ', error);
+    } finally {
+      setLoadingReset(false);
+    }
   };
   return (
     <View>
@@ -68,16 +65,16 @@ const LoginScreen = ({loginFromParent}) => {
         errorMessage={passwordError}
         inputContainerStyle={passwordError && {borderBottomColor: 'red'}}
       />
-      <CheckBox
+      {/* <CheckBox
         title="Remember me"
         checked={rememberMe}
         textStyle={{ fontWeight: "500", fontSize: 16 }}
         containerStyle={{ backgroundColor: null }}
         onPress={() => setRememberMe((prev) => !prev)}
-      />
+      /> */}
       <Button
         title="Sign In"
-        buttonStyle={{ backgroundColor: colors.primary, marginTop: 15 }}
+        buttonStyle={{ backgroundColor: colors.primary, marginVertical: 20 }}
         onPress={handleSignIn}
         disabled={username.trim() && password.trim() ? false : true}
         loading={loading}
@@ -85,10 +82,7 @@ const LoginScreen = ({loginFromParent}) => {
 
       {/* ------- forget pass modal ------- */}
 
-      <Pressable
-        style={{ marginTop: 20 }}
-        onPress={() => setModalVisible(true)}
-      >
+      <Pressable onPress={() => setModalVisible(true)}>
         <Text style={{fontSize: 17}}>Forget Passwor?</Text>
       </Pressable>
       <Overlay
@@ -110,6 +104,7 @@ const LoginScreen = ({loginFromParent}) => {
             buttonStyle={{ backgroundColor: colors.primary, marginTop: 15 }}
             onPress={handleResetPassword}
             disabled={email.trim() ? false : true}
+            loading={loadingReset}
           />
         </View>
       </Overlay>
