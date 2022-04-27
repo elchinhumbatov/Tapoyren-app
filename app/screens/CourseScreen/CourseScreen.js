@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import {
   Button,
   Dimensions,
@@ -21,6 +21,8 @@ import MySafeAreaView from "../../components/MySafeAreaView/MySafeAreaView";
 import CourseSections from "../../components/CategoryComponents/CourseSections";
 import CourseMore from "./CourseMore";
 import InstructorInfo from "../../components/CourseComponents/instructorInfo";
+import { AuthContext } from "../../context/authContext";
+import { useIsFocused } from '@react-navigation/native';
 
 
 const CourseScreen = ({ route, navigation }) => {
@@ -29,6 +31,8 @@ const CourseScreen = ({ route, navigation }) => {
   const [isLoading, setisLoading] = useState(false);
   const [isVideoLoading, setIsVideoLoading] = useState(false);
   const [course, setCourse] = useState({});
+  const {isAuth, userData} = useContext(AuthContext);
+  const isFocused = useIsFocused(true);
 
   const fetchCourse = async () => {
     try {
@@ -36,6 +40,7 @@ const CourseScreen = ({ route, navigation }) => {
       let res = await getCourse(route.params.id);
       let data = await res.data;
       setCourse(data[0]);
+      // console.log(data[0]);
     } catch (error) {
       console.log("Error from course screen ", error);
     } finally {
@@ -64,23 +69,27 @@ const CourseScreen = ({ route, navigation }) => {
   // }
 
   const goToEnroll = () => {
-    const prices = {
-      priceMonthly: course.priceMonthly,
-      priceQuarterly: course.priceQuarterly,
-      priceSemianually: course.priceSemianually,
-      priceAnually: course.priceAnually,
+    if (isAuth) {
+      const prices = {
+        priceMonthly: course.priceMonthly,
+        priceQuarterly: course.priceQuarterly,
+        priceSemianually: course.priceSemianually,
+        priceAnually: course.priceAnually,
+      }
+      navigation.navigate("Enroll", { title: course.title, prices, courseId: course.id });
+    } else {
+      navigation.navigate('Account', { screen: 'AuthScreen' })
     }
-    // console.log(prices);
-    navigation.navigate("Enroll", { title: course.title, prices });
   };
 
   useEffect(() => {
+    if (!isFocused) return;
     let mounted = true;
-    if(mounted) fetchCourse();
+    if(mounted) fetchCourse()
     return () => {
       mounted = false;
     }
-  }, [route.params.id]);
+  }, [route.params.id, isFocused, isAuth]);
 
   if (isLoading) return <Loader />;
 
@@ -156,12 +165,11 @@ const CourseScreen = ({ route, navigation }) => {
           </TabView.Item>
         </TabView>
       {/* </ScrollView> */}
-      <TouchableOpacity
-        style={styles.enrollBtnWrap}
-        onPress={() => goToEnroll()}
-      >
-        <Text style={styles.enrollBtn}>Enroll</Text>
-      </TouchableOpacity>
+      {course.isEnroll && (
+        <TouchableOpacity style={styles.enrollBtnWrap} onPress={goToEnroll}>
+          <Text style={styles.enrollBtn}>Enroll</Text>
+        </TouchableOpacity>
+      )}
     </MySafeAreaView>
   );
 };
