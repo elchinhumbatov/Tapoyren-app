@@ -97,9 +97,8 @@ const CourseMore = ({ course, navigation }) => {
             autoPlay
             loop={false}
             style={{
-              width: 400,
-              height: 400,
-              backgroundColor: '#eee',
+              width: 200,
+              height: 200,
             }}
             source={require('../../assets/animations/rating-star.json')}
             onAnimationFinish={handleAnimFinish}

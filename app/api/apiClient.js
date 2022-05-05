@@ -1,5 +1,7 @@
 import axios from 'axios';
 import * as SecureStore from 'expo-secure-store';
+// import TokenService from '../service/token.service'
+
 
 const axiosClient = axios.create({
   baseURL: `http://tapoyren.morooq.az/`,
@@ -19,10 +21,10 @@ export const authAxiosClient = axios.create({
 
 authAxiosClient.interceptors.request.use(
   async (config) => {
+    // const token = await TokenService.getLocalAccessToken();
     const token = await SecureStore.getItemAsync('token');
     // console.log('interceptor token ',token)
     if (token) config.headers.Authorization = `Bearer ${token}`;
-    // console.log('config.headers is ', config.headers);
     return config;
   },
   (error) => {
@@ -32,18 +34,24 @@ authAxiosClient.interceptors.request.use(
 
 authAxiosClient.interceptors.response.use(
   response => {
-    // console.log('interceptors resp', response)
     return response;
   },
-  error => {
-    let res = error.response;
-    if (res.status == 401) {
+  async (error) => {
+    const originalConfig = error.config;
+    if (error.response.status == 401 && !originalConfig._retry) {
       console.warn('error interceptors 401 code ')
-
-      // window.location.href = “https://example.com/login”;
-      // refresh token ()
+      originalConfig._retry = true;
+      try {
+        const resp = await authAxiosClient.post(`/api/User/refresh-token`);
+        const data = await resp.data;
+        await SecureStore.setItemAsync('token', data.token);
+        // await TokenService.setLocalAccessToken(resp.token);
+        return authAxiosClient(originalConfig);
+      } catch (_error) {
+        return Promise.reject(_error);
+      }
     }
-    console.error('Looks like there was a problem. Status Code: ' + res.status);
+    console.error('Looks like there was a problem. Status Code: ' + error.response.status);
     return Promise.reject(error);
   }
 );
