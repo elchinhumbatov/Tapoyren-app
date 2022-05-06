@@ -14,20 +14,21 @@ import {AuthContext} from '../../context/authContext'
 const MyCoursesScreen = ({navigation}) => {
   const [courses, setCourses] = useState(null);
   const [loader, setLoader] = useState(true);
-  const {isAuth, userData} = useContext(AuthContext);
+  const {isAuth, userData, getAccessToken} = useContext(AuthContext);
   
 
-  const fetchMyCourses = () => {
+  const fetchMyCourses = async () => {
     try {
       setLoader(true);
       if(!isAuth) return;
-      const res = getMyCourses(userData.id);
-      const data = res.data;
+      const res = await getMyCourses(userData.id);
+      const data = await res.data;
       console.log('data from mycourses', data)
     } catch (error) {
       console.log('error from myCourses ', error)
     } finally {
-      setLoader(false)
+      setLoader(false);
+      // console.log(await getAccessToken())
     }
   };
   

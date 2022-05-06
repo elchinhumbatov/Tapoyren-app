@@ -1,0 +1,14 @@
+{
+  "title": "english title",
+  "description": {
+    "part1": "inglish lang",
+    "part2": "supercool"
+  },
+  "info": "info",
+  "lang": "language",
+  "about": "about us",
+  "faq": "faq",
+  "call": "contact us",
+  "terms": "terms and conditions",
+  "logout": "logout"
+}

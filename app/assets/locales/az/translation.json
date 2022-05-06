@@ -1,0 +1,14 @@
+{
+  "title": "azeri title",
+  "description": {
+    "part1": "azeri torpaginin",
+    "part2": "ovladiyig"
+  },
+  "info": "melumat",
+  "lang": "dil",
+  "about": "haqqinda",
+  "faq": "faq",
+  "call": "elaqe",
+  "terms": "qaydalar",
+  "logout": "cixish"
+}

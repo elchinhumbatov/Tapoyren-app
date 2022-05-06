@@ -1,0 +1,14 @@
+{
+  "title": "rus title",
+  "description": {
+    "part1": "ruskiy yazishniy",
+    "part2": "pazishniy"
+  },
+  "info": "informaciya",
+  "lang": "yazik",
+  "about": "O nas",
+  "faq": "faq",
+  "call": "Svaz",
+  "terms": "Pravila",
+  "logout": "Vixod"
+}

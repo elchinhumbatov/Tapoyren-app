@@ -1,39 +1,40 @@
 import React, { useState, useEffect, useContext } from "react";
 import { StyleSheet, Text, View, ScrollView, Image, TouchableOpacity } from "react-native";
-import jwtDecode from "jwt-decode";
 import { Ionicons } from '@expo/vector-icons';
+import { Switch } from "react-native-elements";
 
 import MySafeAreaView from "../../components/MySafeAreaView/MySafeAreaView";
 import { AuthContext } from "../../context/authContext";
+import { LangContext } from "../../context/langContext";
 import commonStyles from "../../config/commonStyles";
 import colors from "../../config/colors";
-import { Switch } from "react-native-elements";
+import i18n from "../../service/i18n";
 
 const listItems = [
-  {icon: 'settings-outline', txt: 'Profile Info', func: 'settings'},
-  {icon: 'language-outline', txt: 'Language', func: 'lang'},
-  {icon: 'information-circle-outline', txt: 'About Us', func: 'about'},
-  {icon: 'book-outline', txt: 'FAQ', func: 'faq'},
-  {icon: 'call-outline', txt: 'Contact Us', func: 'contact'},
-  {icon: 'document-outline', txt: 'Terms and Conditions', func: 'terms'},
-  {icon: 'log-out-outline', txt: 'Logout', func: 'logout'},
+  {icon: 'settings-outline', txt: 'info', func: 'settings'},
+  {icon: 'language-outline', txt: 'lang', func: 'lang'},
+  {icon: 'information-circle-outline', txt: 'about', func: 'about'},
+  {icon: 'book-outline', txt: 'faq', func: 'faq'},
+  {icon: 'call-outline', txt: 'call', func: 'contact'},
+  {icon: 'document-outline', txt: 'terms', func: 'terms'},
+  {icon: 'log-out-outline', txt: 'logout', func: 'logout'},
 ]
+// const listItems = [
+//   {icon: 'settings-outline', txt: 'Profile Info', func: 'settings'},
+//   {icon: 'language-outline', txt: 'Language', func: 'lang'},
+//   {icon: 'information-circle-outline', txt: 'About Us', func: 'about'},
+//   {icon: 'book-outline', txt: 'FAQ', func: 'faq'},
+//   {icon: 'call-outline', txt: 'Contact Us', func: 'contact'},
+//   {icon: 'document-outline', txt: 'Terms and Conditions', func: 'terms'},
+//   {icon: 'log-out-outline', txt: 'Logout', func: 'logout'},
+// ]
 
 const AccountScreen = ({navigation}) => {
-  const { logout, userData, getAccessToken } = useContext(AuthContext);
+  const { logout, userData } = useContext(AuthContext);
   const [checked, setChecked] = useState(false);
+  const {lang} = useContext(LangContext);
 
-  // const awaitToken = async () => {
-  //   let token = await getAccessToken();
-  //   let decoded = await jwtDecode(token);
-  //   setUser(decoded);
-  // }
-
-  // useEffect(() => {
-  //   let mounted = true;
-  //   if (mounted) awaitToken();
-  //   return () => mounted = false;
-  // }, []);
+  useEffect(() => {}, [lang]);
 
   const handleNavigate = (switcher) => {
     switch (switcher) {
@@ -81,7 +82,7 @@ const AccountScreen = ({navigation}) => {
                   <Ionicons name={item.icon} size={25} color={colors.primary} />
                 </View>
                 <View style={styles.right}>
-                  <Text style={styles.listItemTitle}>{item.txt}</Text>
+                  <Text style={styles.listItemTitle}>{i18n.t(item.txt)}</Text>
                   <Ionicons name="chevron-forward-outline" size={22} color={colors.primary} />
                 </View>
               </View>

@@ -1,17 +1,21 @@
-import React, { useState } from "react";
-import { Image, StyleSheet, TouchableOpacity, View } from "react-native";
+import React, { useContext, useState, useEffect } from "react";
+import { Image, StyleSheet, TouchableOpacity, View, Text } from "react-native";
 import { CheckBox } from "react-native-elements";
 import colors from "../../config/colors";
 import az from '../../assets/img/az-flag.png';
 import en from '../../assets/img/usa-flag.png';
 import ru from '../../assets/img/russia-flag.png';
+import i18n from "../../service/i18n";
+import { LangContext } from "../../context/langContext";
 
 const Language = () => {
   const [check1, setCheck1] = useState(false);
   const [check2, setCheck2] = useState(false);
   const [check3, setCheck3] = useState(false);
+  let {lang, setLocalLang} = useContext(LangContext);
 
-  const handleCheck = (e) => {
+  const handleCheck = async (e) => {
+    await setLocalLang(e);
     switch (e) {
       case 'az':
         setCheck1(prev => !prev);
@@ -34,6 +38,11 @@ const Language = () => {
         break;
     }
   }
+
+  useEffect(() => {
+    handleCheck(lang);
+  }, [])
+  
 
   return (
     <View style={{ flex: 1 }}>
@@ -76,6 +85,9 @@ const Language = () => {
           <Image source={ru} style={styles.thumbnail} />
         </View>
       </TouchableOpacity>
+      <Text>{i18n.t('title')}</Text>
+      <Text>{i18n.t('description.part1')}</Text>
+      <Text>{i18n.t('description.part2')}</Text>
     </View>
   );
 };
