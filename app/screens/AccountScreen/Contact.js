@@ -1,11 +1,10 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
+import WebView from 'react-native-webview'
 
 const Contact = () => {
   return (
-    <View>
-      <Text>Contact</Text>
-    </View>
+    <WebView source={{uri: 'https://tapoyren.com/contact'}} style={{transform: [{ translateY: -70 }]}} />
   )
 }
 

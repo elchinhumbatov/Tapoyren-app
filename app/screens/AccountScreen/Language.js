@@ -85,9 +85,6 @@ const Language = () => {
           <Image source={ru} style={styles.thumbnail} />
         </View>
       </TouchableOpacity>
-      <Text>{i18n.t('title')}</Text>
-      <Text>{i18n.t('description.part1')}</Text>
-      <Text>{i18n.t('description.part2')}</Text>
     </View>
   );
 };

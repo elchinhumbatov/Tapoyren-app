@@ -16,6 +16,7 @@ const LoginScreen = ({loginFromParent}) => {
   const [modalVisible, setModalVisible] = useState(false);
   // const {setUser} = useContext(UserContext);
   const [loading, setLoading] = useState(false);
+  const [showResetConfirm, setShowResetConfirm] = useState(false);
   const [loadingReset, setLoadingReset] = useState(false);
 
   const handleSignIn = async () => {
@@ -36,9 +37,11 @@ const LoginScreen = ({loginFromParent}) => {
     // else setEmailError('')
     try {
       setLoadingReset(true);
-      let res = await forgetPassword(email);
+      let res = await forgetPassword({email});
       let data = await res.data;
       console.log(data)
+      setShowResetConfirm(true);
+      setEmail('');
     } catch (error) {
       console.log('reset pass error ', error);
     } finally {
@@ -87,7 +90,7 @@ const LoginScreen = ({loginFromParent}) => {
       </Pressable>
       <Overlay
         isVisible={modalVisible}
-        onBackdropPress={() => setModalVisible(false)}
+        onBackdropPress={() => {setModalVisible(false); setShowResetConfirm(false)}}
         overlayStyle={{ width: "95%" }}
       >
         <View style={styles.modalContent}>
@@ -99,6 +102,7 @@ const LoginScreen = ({loginFromParent}) => {
             errorMessage={emailError}
             inputContainerStyle={emailError && {borderBottomColor: 'red'}}
           />
+          {showResetConfirm && <Text style={{fontSize: 16, color: 'red'}}>Please check your email for reset password</Text>}
           <Button
             title="Reset Password"
             buttonStyle={{ backgroundColor: colors.primary, marginTop: 15 }}

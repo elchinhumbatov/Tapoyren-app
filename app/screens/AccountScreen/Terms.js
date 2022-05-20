@@ -1,11 +1,10 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
+import WebView from 'react-native-webview'
 
 const Terms = () => {
   return (
-    <View>
-      <Text>Terms</Text>
-    </View>
+    <WebView source={{uri: 'https://tapoyren.com/terms_and_conditions'}} style={{transform: [{ translateY: -70 }]}} />
   )
 }
 
