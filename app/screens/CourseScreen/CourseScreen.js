@@ -13,6 +13,7 @@ import { Tab, TabView } from "react-native-elements";
 import sanitize from "sanitize-html";
 import WebView from "react-native-webview";
 import * as FileSystem from 'expo-file-system';
+import { Video } from 'expo-av';
 
 import colors from "../../config/colors";
 import { getCourse } from "../../api/courseScreenAPI";
@@ -33,6 +34,8 @@ const CourseScreen = ({ route, navigation }) => {
   const [course, setCourse] = useState({});
   const {isAuth, userData} = useContext(AuthContext);
   const isFocused = useIsFocused(true);
+  const [progress, setProgress] = useState(0);
+  const [localPath, setLocalPath] = useState('');
 
   const fetchCourse = async () => {
     try {
@@ -48,25 +51,38 @@ const CourseScreen = ({ route, navigation }) => {
     }
   };
 
-  const handleDownload = () => {
-    // const uri = `https://player.vimeo.com/video/${videoId}`
-    const uri = 'http://techslides.com/demos/sample-videos/small.mp4'
-    let fileUri = FileSystem.documentDirectory + "small.mp4";
-    FileSystem.downloadAsync(uri, fileUri)
-    .then(({ uri }) => {
-      console.log('first', uri);
-    })
-    .catch(error => {
-      console.error(error);
-    })
+  const handleDelete = async () => {
+    await FileSystem.deleteAsync(localPath);
+    setProgress(0);
+    setLocalPath('');
   }
-  // const saveFile = async (fileUri) => {
-  //   const { status } = await Permissions.askAsync(Permissions.MEDIA_LIBRARY);
-  //   if (status === "granted") {
-  //       const asset = await MediaLibrary.createAssetAsync(fileUri)
-  //       await MediaLibrary.createAlbumAsync("Download", asset, false)
-  //   }
-  // }
+
+  const handleDownload = async () => {
+    // const url = `https://player.vimeo.com/video/${videoId}`
+    // const url = `https://player.vimeo.com/video/692856274`
+    const url = 'http://techslides.com/demos/sample-videos/small.mp4';
+    
+    const callback = downloadProgress => {
+      let prog = downloadProgress.totalBytesWritten / downloadProgress.totalBytesExpectedToWrite;
+      prog *= 100;
+      setProgress(parseInt(prog));
+    };
+    
+    const downloadResumable = FileSystem.createDownloadResumable(
+      url,
+      FileSystem.documentDirectory + 'video1.mp4',
+      {},
+      callback
+    );
+    
+    try {
+      const { uri } = await downloadResumable.downloadAsync();
+      setLocalPath(uri);
+      console.log('Finished downloading to ', uri);
+    } catch (e) {
+      console.error(e);
+    }
+  }
 
   const goToEnroll = () => {
     if (isAuth) {
@@ -113,7 +129,20 @@ const CourseScreen = ({ route, navigation }) => {
           </View>
           <View style={styles.playingTitle}>
             <Text style={{ fontSize: 17 }}>{videoTitle}</Text>
-            <Button onPress={handleDownload} title="Save" />
+            <Button onPress={handleDownload} disabled={!!progress } title="Save" />
+            <Button onPress={handleDelete} disabled={!localPath} title="Delete" style={{color: 'red'}} />
+            <Text>{progress}%</Text>
+            {progress === 100 && (
+              <Video
+                style={{width: 320,height: 200}}
+                source={{
+                  uri: localPath
+                }}
+                useNativeControls
+                resizeMode="contain"
+                // isLooping
+              />
+            )}
           </View>
         </View>
       )}
