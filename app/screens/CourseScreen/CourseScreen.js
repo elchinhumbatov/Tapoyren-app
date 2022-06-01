@@ -174,6 +174,7 @@ const CourseScreen = ({ route, navigation }) => {
             <CourseSections
               setVideoId={setVideoId}
               courseId={route.params.id}
+              isEnroll={course.isEnroll}
             />
           </TabView.Item>
           <TabView.Item onMoveShouldSetResponder={e => e.stopPropagation()}>
@@ -194,7 +195,7 @@ const CourseScreen = ({ route, navigation }) => {
           </TabView.Item>
         </TabView>
       {/* </ScrollView> */}
-      {course.isEnroll && (
+      {!course.isEnroll && (
         <TouchableOpacity style={styles.enrollBtnWrap} onPress={goToEnroll}>
           <Text style={styles.enrollBtn}>Enroll</Text>
         </TouchableOpacity>

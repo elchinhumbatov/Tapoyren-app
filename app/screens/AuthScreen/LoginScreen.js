@@ -92,6 +92,7 @@ const LoginScreen = ({loginFromParent}) => {
         isVisible={modalVisible}
         onBackdropPress={() => {setModalVisible(false); setShowResetConfirm(false)}}
         overlayStyle={{ width: "95%" }}
+        animationType='fade'
       >
         <View style={styles.modalContent}>
           <Input

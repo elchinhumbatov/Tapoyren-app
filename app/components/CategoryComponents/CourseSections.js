@@ -27,14 +27,18 @@ const SectionHeader = ({ section }) => {
 
 const SectionItem = ({
   item,
+  isEnroll,
   setVideoId,
   selectedItemId,
   setSelectedItemId,
 }) => {
 
   const handlePlay = () => {
-    if (item.preview) {
+    if (isEnroll) {
       // setVideoId(438371246);
+      setVideoId({videoId: item.vimeoVideoId, videoTitle: item.title});
+      setSelectedItemId(item.id);
+    } else if (item.preview) {
       setVideoId({videoId: item.vimeoVideoId, videoTitle: item.title});
       setSelectedItemId(item.id);
     }
@@ -52,7 +56,8 @@ const SectionItem = ({
         ]}
       >
         <Ionicons
-          name={item.preview ? "play-circle-outline" : "lock-closed"}
+          // name={item.preview ? "play-circle-outline" : "lock-closed"}
+          name={isEnroll ? "play-circle-outline" : item.preview ? "play-circle-outline" : "lock-closed"}
           color={colors.primary}
           size={24}
           style={{ marginRight: 5 }}
@@ -68,7 +73,7 @@ const SectionItem = ({
   );
 };
 
-const CourseSections = ({ setVideoId, courseId, scrollToTop }) => {
+const CourseSections = ({ setVideoId, courseId, isEnroll, scrollToTop }) => {
   const [courseSections, setCourseSections] = useState([]);
   const [isLoading, setisLoading] = useState(false);
   const [selectedItemId, setSelectedItemId] = useState(null);
@@ -107,6 +112,7 @@ const CourseSections = ({ setVideoId, courseId, scrollToTop }) => {
           setVideoId={setVideoId}
           selectedItemId={selectedItemId}
           setSelectedItemId={setSelectedItemId}
+          isEnroll={isEnroll}
         />
       )}
       renderSectionHeader={({ section }) => <SectionHeader section={section} />}
