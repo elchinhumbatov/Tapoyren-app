@@ -12,6 +12,8 @@ import { getInstructorCourses } from "../../api/courseScreenAPI";
 import CategoryScreens from "../../components/CategoryComponents/CategoryScreens";
 import CourseComponent from "../../components/CategoryComponents/CourseComponent";
 import Loader from "../../components/Loader/Loader";
+import i18n from '../../service/i18n'
+
 
 const InstructorProfile = ({ route, navigation }) => {
   const [loading, setLoading] = useState(false);
@@ -63,16 +65,16 @@ const InstructorProfile = ({ route, navigation }) => {
         </View>
         <View>
           <Text style={styles.instructor}>{instructorObj.instructorName}</Text>
-          <Text style={{}}>Təlimçi</Text>
+          <Text style={{}}>{i18n.t('course.instructor.title')}</Text>
         </View>
       </View>
       {instructorObj.about != "" && (
         <View style={styles.about}>
-          <TextInfo title={"About"} txt={instructorObj.about} />
+          <TextInfo title={i18n.t('course.instructor.about')} txt={instructorObj.about} />
         </View>
       )}
       <View style={styles.courses}>
-        <Text style={styles.h2}>Courses</Text>
+        <Text style={styles.h2}>{i18n.t('course.instructor.courses')}</Text>
         <CategoryScreens
           // data={instructorObj.categoryCoursesDto}
           data={instructorCourses}

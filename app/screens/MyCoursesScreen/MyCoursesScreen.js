@@ -1,6 +1,7 @@
 import React, {useEffect, useState, useContext} from 'react'
 import { Button, StyleSheet, Text, View } from 'react-native'
 import { Image } from 'react-native';
+import i18n from '../../service/i18n';
 
 import MySafeAreaView from '../../components/MySafeAreaView/MySafeAreaView';
 import commonStyles from '../../config/commonStyles';
@@ -48,7 +49,7 @@ const MyCoursesScreen = ({navigation}) => {
 
   return (
     <MySafeAreaView>
-      <Text style={ commonStyles.screenTitle }>My Courses</Text>
+      <Text style={ commonStyles.screenTitle }>{i18n.t('myCourses.title')}</Text>
       <View style={styles.emptyWrap}>
         <Image source={require('../../assets/img/paper.png')} style={styles.img} resizeMode='contain' />
         <Text style={styles.title}>No enrolled course yet</Text>

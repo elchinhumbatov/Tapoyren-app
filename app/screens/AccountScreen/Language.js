@@ -18,21 +18,21 @@ const Language = () => {
     await setLocalLang(e);
     switch (e) {
       case 'az':
-        setCheck1(prev => !prev);
+        setCheck1(true);
         setCheck2(false);
         setCheck3(false);
         break;
     
       case 'en':
         setCheck1(false);
-        setCheck2(prev => !prev);
+        setCheck2(true);
         setCheck3(false);
         break;
     
       case 'ru':
         setCheck1(false);
         setCheck2(false);
-        setCheck3(prev => !prev);
+        setCheck3(true);
         break;
       default:
         break;
@@ -50,7 +50,7 @@ const Language = () => {
         <View style={styles.lang}>
           <CheckBox
             containerStyle={styles.checkbox}
-            title={`Az`}
+            title={`Azərbaycan`}
             checkedIcon="dot-circle-o"
             uncheckedIcon="circle-o"
             checkedColor={colors.primary}
@@ -63,7 +63,7 @@ const Language = () => {
         <View style={styles.lang}>
           <CheckBox
             containerStyle={styles.checkbox}
-            title={`En`}
+            title={`English`}
             checkedIcon="dot-circle-o"
             uncheckedIcon="circle-o"
             checkedColor={colors.primary}
@@ -76,7 +76,7 @@ const Language = () => {
         <View style={styles.lang}>
           <CheckBox
             containerStyle={styles.checkbox}
-            title={`Ru`}
+            title={`Русский`}
             checkedIcon="dot-circle-o"
             uncheckedIcon="circle-o"
             checkedColor={colors.primary}

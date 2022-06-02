@@ -5,6 +5,7 @@ import LottieView from "lottie-react-native";
 
 import commonStyles from "../../config/commonStyles";
 import colors from "../../config/colors";
+import i18n from '../../service/i18n'
 
 const CourseComponent = ({ item, onPress }) => {
   const [isImgLoad, setIsImgLoad] = useState(false);
@@ -42,14 +43,14 @@ const CourseComponent = ({ item, onPress }) => {
             <View style={styles.info}>
               {item.isEnrolled === null ? 
               <Text>&#8380; {item.priceMonthly}</Text> : 
-              <Text style={{color: colors.primary, fontWeight: 'bold'}}>Enrolled</Text>}
+              <Text style={{color: colors.primary, fontWeight: 'bold'}}>{i18n.t('course.enrolled')}</Text>}
               <Text style={{}}>
                 {item.rating} <Ionicons name="star" color={colors.primary} />
               </Text>
             </View>
             <Text>
               <Ionicons name="time-outline" size={15} />{" "}
-              {(item.courseDuration / 3600).toFixed(2)} saat
+              {(item.courseDuration / 3600).toFixed(2)} {i18n.t('course.hour')}
             </Text>
           </View>
         </View>

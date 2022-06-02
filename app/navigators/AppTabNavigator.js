@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useContext } from 'react'
 import { Platform, StyleSheet } from 'react-native'
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "@expo/vector-icons";
@@ -9,11 +9,17 @@ import SearchNavigator from './SearchNavigator';
 import MyCoursesNavigator from './MyCoursesNavigator';
 import HomeNavigator from './HomeNavigator';
 import AccountNavigator from './AccountNavigator';
+import i18n from '../service/i18n';
+import { LangContext } from '../context/langContext';
 
 
 const Tab = createBottomTabNavigator();
 
 const AppTabNavigator = () => {
+  const {lang} = useContext(LangContext);
+
+  useEffect(() => {}, [lang]);
+
   return (
     <Tab.Navigator
         screenOptions={({ route }) => ({
@@ -48,11 +54,11 @@ const AppTabNavigator = () => {
           tabBarInactiveTintColor: "gray",
         })}
       >
-        <Tab.Screen name="Home" component={HomeNavigator} />
-        <Tab.Screen name="Search" component={SearchNavigator} />
-        <Tab.Screen name="CategoriesNavigator" component={CategoriesNavigator} options={{title: 'Categories'}} />
-        <Tab.Screen name="MyLearning" component={MyCoursesNavigator} options={{title: 'My Courses'}} />
-        <Tab.Screen name="Account" component={AccountNavigator} />
+        <Tab.Screen name="Home" component={HomeNavigator} options={{title: i18n.t('tabs.home')}} />
+        <Tab.Screen name="Search" component={SearchNavigator} options={{title: i18n.t('tabs.search')}} />
+        <Tab.Screen name="CategoriesNavigator" component={CategoriesNavigator} options={{title: i18n.t('tabs.categories')}} />
+        <Tab.Screen name="MyLearning" component={MyCoursesNavigator} options={{title: i18n.t('tabs.myCourses')}} />
+        <Tab.Screen name="Account" component={AccountNavigator} options={{title: i18n.t('tabs.account')}} />
       </Tab.Navigator>
   )
 }

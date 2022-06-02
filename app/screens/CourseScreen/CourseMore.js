@@ -7,6 +7,7 @@ import LottieView from 'lottie-react-native';
 import colors from "../../config/colors";
 import {AuthContext} from "../../context/authContext"
 import { setCourseRating } from "../../api/courseScreenAPI";
+import i18n from '../../service/i18n'
 
 
 const CourseMore = ({ course, navigation }) => {
@@ -54,13 +55,13 @@ const CourseMore = ({ course, navigation }) => {
       <Pressable onPress={handleShare}>
         <View style={styles.itemWrap}>
           <Ionicons name="share-outline" size={20} />
-          <Text style={styles.itemTxt}>Share this course</Text>
+          <Text style={styles.itemTxt}>{i18n.t('course.tabs.more.share')}</Text>
         </View>
       </Pressable>
       <Pressable onPress={handleRate}>
         <View style={styles.itemWrap}>
           <Ionicons name="star-outline" size={20} />
-          <Text style={styles.itemTxt}>Rate this course</Text>
+          <Text style={styles.itemTxt}>{i18n.t('course.tabs.more.rate')}</Text>
         </View>
       </Pressable>
       {/* <Pressable onPress={handleFavorite}>

@@ -17,6 +17,7 @@ import HorizontalCourses from "../../components/HomeScreen/HorizontalCourses";
 import { getCourses as getCoursesBySubcatId } from '../../api/categoryScreenAPI';
 import { Ionicons } from '@expo/vector-icons';
 import { AuthContext } from "../../context/authContext";
+import i18n from "../../service/i18n";
 
 
 const HomeScreen = ({ navigation }) => {
@@ -111,9 +112,9 @@ const HomeScreen = ({ navigation }) => {
         
           <View style={styles.header}>
             <View>
-              <Animated.View style={{opacity: fade1}}><Text style={styles.headerTitle}>Tap.</Text></Animated.View>
-              <Animated.View style={{opacity: fade2}}><Text style={styles.headerTitle}>Öyrən.</Text></Animated.View>
-              <Animated.View style={{opacity: fade3}}><Text style={styles.headerTitle}>İnkişaf et.</Text></Animated.View>
+              <Animated.View style={{opacity: fade1}}><Text style={styles.headerTitle}>{i18n.t('home.title.h1')}</Text></Animated.View>
+              <Animated.View style={{opacity: fade2}}><Text style={styles.headerTitle}>{i18n.t('home.title.h2')}</Text></Animated.View>
+              <Animated.View style={{opacity: fade3}}><Text style={styles.headerTitle}>{i18n.t('home.title.h3')}</Text></Animated.View>
             </View>
             <Image
               style={styles.headerImg}
@@ -128,12 +129,12 @@ const HomeScreen = ({ navigation }) => {
         <View style={[styles.topRated, styles.section]}>
           <View style={styles.sectionTitleWrap}>
             <Text style={styles.sectionTitle}>
-            Top Rated <Ionicons name="flame" color={'orange'} size={22} />
+            {i18n.t('home.headers.topRated')} <Ionicons name="flame" color={'orange'} size={22} />
             </Text>
             <Pressable
               onPress={() => handleSeeAll("Top Rated", byRating.slice(0, 40))}
             >
-              <Text style={{color: colors.primary, fontSize: 18}}>See all</Text>
+              <Text style={{color: colors.primary, fontSize: 18}}>{i18n.t('home.seeAll')}</Text>
             </Pressable>
           </View>
           <HorizontalCourses data={byRating.slice(0, 5)} handleCourse={handleCourse} />
@@ -146,7 +147,7 @@ const HomeScreen = ({ navigation }) => {
             <Pressable
               onPress={() => handleSeeAll("ACCA", accaCourses)}
             >
-              <Text style={{color: colors.primary, fontSize: 18}}>See all</Text>
+              <Text style={{color: colors.primary, fontSize: 18}}>{i18n.t('home.seeAll')}</Text>
             </Pressable>
           </View>
           <HorizontalCourses data={accaCourses.slice(0, 5)} handleCourse={handleCourse} />
@@ -159,7 +160,7 @@ const HomeScreen = ({ navigation }) => {
             <Pressable
               onPress={() => handleSeeAll("CFA", cfaCourses)}
             >
-              <Text style={{color: colors.primary, fontSize: 18}}>See all</Text>
+              <Text style={{color: colors.primary, fontSize: 18}}>{i18n.t('home.seeAll')}</Text>
             </Pressable>
           </View>
           <HorizontalCourses data={cfaCourses.slice(0, 5)} handleCourse={handleCourse} />

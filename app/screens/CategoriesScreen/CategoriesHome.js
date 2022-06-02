@@ -7,6 +7,7 @@ import CategoryScreens from "../../components/CategoryComponents/CategoryScreens
 import Loader from "../../components/Loader/Loader";
 import MySafeAreaView from "../../components/MySafeAreaView/MySafeAreaView";
 import commonStyles from "../../config/commonStyles";
+import i18n from "../../service/i18n";
 
 const CategoriesHome = ({ navigation }) => {
   const [categories, setCategories] = useState([]);
@@ -42,7 +43,7 @@ const CategoriesHome = ({ navigation }) => {
 
   return (
     <MySafeAreaView>
-      <Text style={commonStyles.screenTitle}>Categories</Text>
+      <Text style={commonStyles.screenTitle}>{i18n.t('categories.title')}</Text>
       <CategoryScreens
         data={categories}
         CBfunc={handleCategory}

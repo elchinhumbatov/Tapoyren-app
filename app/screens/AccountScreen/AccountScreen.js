@@ -11,13 +11,13 @@ import colors from "../../config/colors";
 import i18n from "../../service/i18n";
 
 const listItems = [
-  {icon: 'settings-outline', txt: 'info', func: 'settings'},
-  {icon: 'language-outline', txt: 'lang', func: 'lang'},
-  {icon: 'information-circle-outline', txt: 'about', func: 'about'},
-  {icon: 'book-outline', txt: 'faq', func: 'faq'},
-  {icon: 'call-outline', txt: 'call', func: 'contact'},
-  {icon: 'document-outline', txt: 'terms', func: 'terms'},
-  {icon: 'log-out-outline', txt: 'logout', func: 'logout'},
+  {icon: 'settings-outline', txt: 'account.list.info', func: 'settings'},
+  {icon: 'language-outline', txt: 'account.list.lang', func: 'lang'},
+  {icon: 'information-circle-outline', txt: 'account.list.about', func: 'about'},
+  {icon: 'book-outline', txt: 'account.list.faq', func: 'faq'},
+  {icon: 'call-outline', txt: 'account.list.call', func: 'contact'},
+  {icon: 'document-outline', txt: 'account.list.terms', func: 'terms'},
+  {icon: 'log-out-outline', txt: 'account.list.logout', func: 'logout'},
 ]
 // const listItems = [
 //   {icon: 'settings-outline', txt: 'Profile Info', func: 'settings'},
@@ -38,12 +38,12 @@ const AccountScreen = ({navigation}) => {
 
   const handleNavigate = (switcher) => {
     switch (switcher) {
-      case 'settings': return navigation.navigate('AccountSettings', {title: listItems[0].txt});
-      case 'lang': return navigation.navigate('AccountLanguage', {title: listItems[1].txt});
-      case 'about': return navigation.navigate('AccountAboutus', {title: listItems[2].txt});
-      case 'faq': return navigation.navigate('AccountFAQ', {title: listItems[3].txt});
-      case 'contact': return navigation.navigate('AccountContact', {title: listItems[4].txt});
-      case 'terms': return navigation.navigate('AccountTerms', {title: listItems[5].txt});
+      case 'settings': return navigation.navigate('AccountSettings', {title: i18n.t(listItems[0].txt)});
+      case 'lang': return navigation.navigate('AccountLanguage', {title: i18n.t(listItems[1].txt)});
+      case 'about': return navigation.navigate('AccountAboutus', {title: i18n.t(listItems[2].txt)});
+      case 'faq': return navigation.navigate('AccountFAQ', {title: i18n.t(listItems[3].txt)});
+      case 'contact': return navigation.navigate('AccountContact', {title: i18n.t(listItems[4].txt)});
+      case 'terms': return navigation.navigate('AccountTerms', {title: i18n.t(listItems[5].txt)});
       case 'logout': return logout();
       default:
         break;
@@ -53,7 +53,7 @@ const AccountScreen = ({navigation}) => {
   
   return (
     <MySafeAreaView>
-      <Text style={ commonStyles.screenTitle }>Account</Text>
+      <Text style={ commonStyles.screenTitle }>{i18n.t('account.title')}</Text>
       <ScrollView style={styles.container}>
         <View style={styles.header}>
           <View style={styles.avatarBox}>
@@ -61,19 +61,19 @@ const AccountScreen = ({navigation}) => {
           </View>
           <View style={styles.nameBox}>
             <Text style={styles.name}>{userData.given_name}</Text>
-            <Text style={styles.role}>Telimci</Text>
+            <Text style={styles.role}>{i18n.t('account.role.student')}</Text>
           </View>
         </View>
         <View style={styles.content}>
-          <View style={styles.listItem}>
+          {/* <View style={styles.listItem}>
             <View style={styles.left}>
               <Ionicons name='moon-outline' size={25} color={colors.primary} />
             </View>
             <View style={styles.right}>
-              <Text style={styles.listItemTitle}>Dark Theme</Text>
+              <Text style={styles.listItemTitle}>{i18n.t('account.list.theme')}</Text>
               <Switch value={checked} onValueChange={(value) => setChecked(value)} />
             </View>
-          </View>
+          </View> */}
 
           {listItems.map(item => (
             <TouchableOpacity onPress={() => handleNavigate(item.func)} key={item.txt}>

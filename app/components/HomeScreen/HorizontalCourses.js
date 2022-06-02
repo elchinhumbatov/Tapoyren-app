@@ -12,6 +12,7 @@ import { Ionicons } from "@expo/vector-icons";
 
 import colors from "../../config/colors";
 import commonStyles from '../../config/commonStyles';
+import i18n from '../../service/i18n'
 
 
 const HorizontalCourses = ({ data, handleCourse }) => {
@@ -30,12 +31,12 @@ const HorizontalCourses = ({ data, handleCourse }) => {
                 item.isEnrolled === null ? (
                   <Text style={{ fontSize: 16 }}>&#8380; {item.priceMonthly}</Text>
                 ) : (
-                  <Text style={{color: colors.primary, fontWeight: 'bold'}}>Enrolled</Text>
+                  <Text style={{color: colors.primary, fontWeight: 'bold'}}>{i18n.t('course.enrolled')}</Text>
                 )
               }
               <Text style={{ fontSize: 16 }}>
                 <Ionicons name="time-outline" size={16} />{" "}
-                {(item.courseDuration / 3600).toFixed(2)} saat
+                {(item.courseDuration / 3600).toFixed(2)} {i18n.t('course.hour')}
               </Text>
               <Text style={{ fontSize: 16 }}>
                 {item.rating}{" "}

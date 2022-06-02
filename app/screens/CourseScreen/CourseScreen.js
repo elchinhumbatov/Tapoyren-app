@@ -24,6 +24,7 @@ import CourseMore from "./CourseMore";
 import InstructorInfo from "../../components/CourseComponents/instructorInfo";
 import { AuthContext } from "../../context/authContext";
 import { useIsFocused } from '@react-navigation/native';
+import i18n from '../../service/i18n'
 
 
 const CourseScreen = ({ route, navigation }) => {
@@ -153,17 +154,17 @@ const CourseScreen = ({ route, navigation }) => {
         indicatorStyle={{ backgroundColor: "blue" }}
       >
         <Tab.Item
-          title="Videos"
+          title={i18n.t('course.tabs.videos')}
           titleStyle={styles.tabTitle}
           containerStyle={styles.tabContainer}
         />
         <Tab.Item
-          title="About"
+          title={i18n.t('course.tabs.about')}
           titleStyle={styles.tabTitle}
           containerStyle={styles.tabContainer}
         />
         <Tab.Item
-          title="More"
+          title={i18n.t('course.tabs.more.title')}
           titleStyle={styles.tabTitle}
           containerStyle={styles.tabContainer}
         />
@@ -197,7 +198,7 @@ const CourseScreen = ({ route, navigation }) => {
       {/* </ScrollView> */}
       {!course.isEnroll && (
         <TouchableOpacity style={styles.enrollBtnWrap} onPress={goToEnroll}>
-          <Text style={styles.enrollBtn}>Enroll</Text>
+          <Text style={styles.enrollBtn}>{i18n.t('course.enroll.title')}</Text>
         </TouchableOpacity>
       )}
     </MySafeAreaView>

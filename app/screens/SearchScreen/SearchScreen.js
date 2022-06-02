@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from "react";
 import { Keyboard, StyleSheet, Text, TextInput, TouchableWithoutFeedback, View, ScrollView, FlatList, Platform, Image } from "react-native";
 import Fuse from 'fuse.js'
+import i18n from '../../service/i18n'
 
 import MySafeAreaView from "../../components/MySafeAreaView/MySafeAreaView";
 import commonStyles from '../../config/commonStyles'
@@ -64,12 +65,12 @@ const SearchScreen = ({ route, navigation }) => {
   
   return (
     <MySafeAreaView>
-      <Text style={ commonStyles.screenTitle }>Search</Text>
+      <Text style={ commonStyles.screenTitle }>{i18n.t('search.title')}</Text>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={styles.container}>
           <TextInput 
             style={[styles.searchInput, {borderColor: isFocused ? 'blue' : 'silver'}]}
-            placeholder='Type here...'
+            placeholder={`${i18n.t('search.placeholder')}...`}
             clearButtonMode='while-editing'
             value={inputValue}
             onChangeText={handleChange}

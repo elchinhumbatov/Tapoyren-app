@@ -7,6 +7,7 @@ import { initiatePayment } from '../../api/paymentAPI';
 import WebView from "react-native-webview";
 import { Ionicons } from '@expo/vector-icons';
 import MySafeAreaView from "../../components/MySafeAreaView/MySafeAreaView";
+import i18n from '../../service/i18n'
 
 
 const EnrollCourse = ({route, navigation}) => {
@@ -16,10 +17,10 @@ const EnrollCourse = ({route, navigation}) => {
   const {priceMonthly, priceQuarterly, priceSemianually, priceAnually} = route.params.prices;
   const {userData} = useContext(AuthContext);
   const prices = [
-    {idx: 0, type: 'Monthly', color: '#4f9deb', info: null, price: priceMonthly},
-    {idx: 1, type: 'Quarterly', color: '#A72CE9', info: ["Recomended"], price: priceQuarterly},
-    {idx: 2, type: 'Semianually', color: '#FF7500', info: ["Some basic info if u want"], price: priceSemianually},
-    {idx: 3, type: 'Anually', color: 'lightgreen', info: ["Some basic info if u want"], price: priceAnually},
+    {idx: 0, title: 'course.enroll.monthly', type: 'monthly', color: '#4f9deb', info: null, price: priceMonthly},
+    {idx: 1, title: 'course.enroll.quarterly', type: 'quarterly', color: '#A72CE9', info: ["Recomended"], price: priceQuarterly},
+    {idx: 2, title: 'course.enroll.semianually', type: 'semianually', color: '#FF7500', info: ["Some basic info if u want"], price: priceSemianually},
+    {idx: 3, title: 'course.enroll.anually', type: 'anually', color: 'lightgreen', info: ["Some basic info if u want"], price: priceAnually},
   ];
   
   const fetchIp = async () => {
@@ -62,10 +63,10 @@ const EnrollCourse = ({route, navigation}) => {
               return <PricingCard
                 key={item.idx}
                 color={item.color}
-                title={item.type}
+                title={i18n.t(item.title)}
                 price={'₼ ' + item.price}
                 info={item.info}
-                button={{ title: "  GET STARTED", icon: "payments", loading: urlIsLoading }}
+                button={{ title: `  ${i18n.t('course.enroll.btn')}`, icon: "payments", loading: urlIsLoading }}
                 onButtonPress={() => handleEnroll(item.type)}
               />
             }

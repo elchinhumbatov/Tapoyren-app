@@ -1,6 +1,7 @@
 import React from "react";
 import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
 import colors from "../../config/colors";
+import i18n from '../../service/i18n'
 
 const InstructorInfo = ({navigation, course, courseId}) => {
   return (
@@ -19,7 +20,7 @@ const InstructorInfo = ({navigation, course, courseId}) => {
         </View>
         <View style={{flex: 1}}>
           <Text style={styles.instructor}>{course.instructorName}</Text>
-          <Text style={styles.secondary}>Təlimçi</Text>
+          <Text style={styles.secondary}>{i18n.t('course.instructor.title')}</Text>
         </View>
       </View>
       <TouchableOpacity
@@ -32,7 +33,7 @@ const InstructorInfo = ({navigation, course, courseId}) => {
           })
         }
       >
-        <Text style={styles.profileBtn}>Profile</Text>
+        <Text style={styles.profileBtn}>{i18n.t('course.profile')}</Text>
       </TouchableOpacity>
     </View>
   );
