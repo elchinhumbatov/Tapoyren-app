@@ -78,5 +78,14 @@
       "showL": "меньше",
       "courses": "Курсы"
     }
+  },
+  "auth": {
+    "signin": "Войти",
+    "signup": "Регистрация",
+    "forget": "Забыл пароль?",
+    "reset": "Обновить пароль",
+    "agree": "Согласен с ",
+    "checkEmail": "Please check your email for reset password",
+    "agreeError": "Please read and agree with the terms"
   }
 }

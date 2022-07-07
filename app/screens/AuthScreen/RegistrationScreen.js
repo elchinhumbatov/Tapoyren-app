@@ -12,6 +12,7 @@ import * as SecureStore from 'expo-secure-store';
 
 import { signUp } from "../../api/accountScreenAPI";
 import colors from "../../config/colors";
+import i18n from '../../service/i18n'
 
 
 const RegistrationScreen = ({signUpFromParent}) => {
@@ -38,8 +39,8 @@ const RegistrationScreen = ({signUpFromParent}) => {
     // if(password !== password2) return setPassword2Error('Passwords doesn\'t match')
     // else setPassword2Error('')
     // agreement validation
-    // if (!agree) return setAgreeError(!agree)
-    // else setAgreeError(false)
+    if (!agree) return setAgreeError(!agree)
+    else setAgreeError(false)
 
     let newUser = {
       name: fullName,
@@ -99,7 +100,7 @@ const RegistrationScreen = ({signUpFromParent}) => {
         />
         <View style={{ flexDirection: "row", alignItems: "center" }}>
           <CheckBox
-            title="Agree with"
+            title={i18n.t('auth.agree')}
             checked={agree}
             textStyle={{ fontWeight: "500", fontSize: 16 }}
             containerStyle={{
@@ -114,9 +115,9 @@ const RegistrationScreen = ({signUpFromParent}) => {
             <Text style={styles.terms}>Terms & Conditions</Text>
           </Pressable>
         </View>
-        {agreeError && <Text style={{paddingLeft: 10, color: 'red'}}>Please read and agree with the terms</Text>}
+        {agreeError && <Text style={{paddingLeft: 10, color: 'red'}}>{i18n.t('auth.agreeError')}</Text>}
         <Button
-          title="Sign Up"
+          title={i18n.t('auth.signup')}
           buttonStyle={{ backgroundColor: colors.primary, marginTop: 15 }}
           onPress={handleSignUp}
           disabled={fullName.trim() && email.trim() && password.trim() && password2.trim() ? false : true}

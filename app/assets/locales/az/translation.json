@@ -78,5 +78,14 @@
       "showL": "daha az",
       "courses": "Kurslar"
     }
+  },
+  "auth": {
+    "signin": "Daxil ol",
+    "signup": "Hesab aç",
+    "forget": "Şifrəni unutduz?",
+    "reset": "Şifrəni yenilə",
+    "agree": "Razılıq ",
+    "checkEmail": "Please check your email for reset password",
+    "agreeError": "Please read and agree with the terms"
   }
 }

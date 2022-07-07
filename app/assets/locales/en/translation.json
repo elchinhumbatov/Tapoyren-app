@@ -78,5 +78,14 @@
       "showL": "show less",
       "courses": "Courses"
     }
+  },
+  "auth": {
+    "signin": "Sign In",
+    "signup": "Sign Up",
+    "forget": "Forget Password?",
+    "reset": "Reset Password",
+    "agree": "Agree with ",
+    "checkEmail": "Please check your email for reset password",
+    "agreeError": "Please read and agree with the terms"
   }
 }

@@ -15,6 +15,7 @@ import LoginScreen from "./LoginScreen";
 import RegistrationScreen from "./RegistrationScreen";
 import { signIn, signUp } from "../../api/accountScreenAPI";
 import { AuthContext } from "../../context/authContext";
+import i18n from '../../service/i18n'
 
 const AuthScreen = ({ navigation }) => {
   const [isLogin, setIsLogin] = useState(true);
@@ -65,7 +66,7 @@ const AuthScreen = ({ navigation }) => {
               ]}
               onPress={() => setIsLogin(true)}
             >
-              <Text style={[styles.toggleBtnText, {color: isLogin ? '#fff': '#000'}]}>Sign in</Text>
+              <Text style={[styles.toggleBtnText, {color: isLogin ? '#fff': '#000'}]}>{i18n.t('auth.signin')}</Text>
             </Pressable>
             <Pressable
               style={[
@@ -74,7 +75,7 @@ const AuthScreen = ({ navigation }) => {
               ]}
               onPress={() => setIsLogin(false)}
             >
-              <Text style={[styles.toggleBtnText, {color: !isLogin ? '#fff': '#000'}]}>Sign up</Text>
+              <Text style={[styles.toggleBtnText, {color: !isLogin ? '#fff': '#000'}]}>{i18n.t('auth.signup')}</Text>
             </Pressable>
           </View>
           {isLogin ? 

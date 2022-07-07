@@ -4,6 +4,8 @@ import { Button, CheckBox, Input, Overlay } from "react-native-elements";
 import { forgetPassword } from "../../api/accountScreenAPI";
 
 import colors from "../../config/colors";
+import i18n from '../../service/i18n'
+
 
 const LoginScreen = ({loginFromParent}) => {
   const [username, setUsername] = useState("");
@@ -76,7 +78,7 @@ const LoginScreen = ({loginFromParent}) => {
         onPress={() => setRememberMe((prev) => !prev)}
       /> */}
       <Button
-        title="Sign In"
+        title={i18n.t('auth.signin')}
         buttonStyle={{ backgroundColor: colors.primary, marginVertical: 20 }}
         onPress={handleSignIn}
         disabled={username.trim() && password.trim() ? false : true}
@@ -86,7 +88,7 @@ const LoginScreen = ({loginFromParent}) => {
       {/* ------- forget pass modal ------- */}
 
       <Pressable onPress={() => setModalVisible(true)}>
-        <Text style={{fontSize: 17}}>Forget Passwor?</Text>
+        <Text style={{fontSize: 17}}>{i18n.t('auth.forget')}</Text>
       </Pressable>
       <Overlay
         isVisible={modalVisible}
@@ -103,7 +105,7 @@ const LoginScreen = ({loginFromParent}) => {
             errorMessage={emailError}
             inputContainerStyle={emailError && {borderBottomColor: 'red'}}
           />
-          {showResetConfirm && <Text style={{fontSize: 16, color: 'red'}}>Please check your email for reset password</Text>}
+          {showResetConfirm && <Text style={{fontSize: 16, color: 'red'}}>{i18n.t('auth.checkEmail')}</Text>}
           <Button
             title="Reset Password"
             buttonStyle={{ backgroundColor: colors.primary, marginTop: 15 }}
